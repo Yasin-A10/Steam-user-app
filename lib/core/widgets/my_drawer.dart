@@ -89,7 +89,7 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                context.pop();
+                GoRouter.of(context).push('/profile');
               },
             ),
           ),

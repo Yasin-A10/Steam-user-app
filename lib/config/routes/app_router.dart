@@ -4,6 +4,7 @@ import 'package:steam/config/routes/route_paths.dart';
 import 'package:steam/features/about_us/about_us_screen.dart';
 import 'package:steam/features/contact_us/screen/contact_us_screen.dart';
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
+import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: RoutePaths.home,
@@ -19,6 +20,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.contactUs,
       builder: (context, state) => const ContactUsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.profile,
+      builder: (context, state) => const ProfileScreen(),
     ),
   ],
   //* errorBuilder: (context, state) => const NotFoundScreen(),
