@@ -18,16 +18,18 @@ class AppTheme {
       scaffoldBackgroundColor: backgroundColor,
 
       appBarTheme: AppBarTheme(
+        toolbarHeight: 80,
         surfaceTintColor: AppColors.white,
         foregroundColor: AppColors.myBlack,
         centerTitle: true,
         actionsPadding: const EdgeInsets.only(left: 8),
-        shape: LinearBorder.bottom(side: BorderSide(color: AppColors.myGrey4)),
+        shape: LinearBorder.bottom(side: BorderSide(color: AppColors.myGrey5)),
         elevation: 8,
         titleTextStyle: const TextStyle(
-          fontSize: 36,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
           color: AppColors.myBlack,
+          fontFamily: 'IRANYekanX',
         ),
       ),
 

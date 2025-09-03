@@ -52,7 +52,7 @@ class MainPageCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.myGrey4),
+                        border: Border.all(color: AppColors.myGrey5),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -101,7 +101,7 @@ class MainPageCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(color: AppColors.myGrey4, thickness: 1),
+          const Divider(color: AppColors.myGrey5, thickness: 1),
         ],
       ),
     );

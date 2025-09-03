@@ -131,7 +131,7 @@ class MyDrawer extends StatelessWidget {
               ),
               onTap: () {
                 context.pop();
-                GoRouter.of(context).push('/setting');
+                GoRouter.of(context).push('/contact-us');
               },
             ),
           ),
@@ -152,7 +152,7 @@ class MyDrawer extends StatelessWidget {
               ),
               onTap: () {
                 context.pop();
-                GoRouter.of(context).push('/setting');
+                GoRouter.of(context).push('/about-us');
               },
             ),
           ),
