@@ -34,7 +34,7 @@ class AppColors {
 
   // ========= Error =========
   static const Color error0 = Color(0xFFFEFFF2);
-  static const Color error25 = Color(0xFFFADAE1);
+  static const Color error25 = Color(0xFFFFE9E9);
   static const Color error50 = Color(0xFFED8296);
   static const Color error100 = Color(0xFFDF1C41);
   static const Color error200 = Color(0xFFE30000);

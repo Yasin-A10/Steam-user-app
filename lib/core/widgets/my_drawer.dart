@@ -89,6 +89,7 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                Scaffold.of(context).closeDrawer();
                 GoRouter.of(context).push('/profile');
               },
             ),
@@ -130,7 +131,7 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                context.pop();
+                Scaffold.of(context).closeDrawer();
                 GoRouter.of(context).push('/contact-us');
               },
             ),
@@ -151,7 +152,7 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                context.pop();
+                Scaffold.of(context).closeDrawer();
                 GoRouter.of(context).push('/about-us');
               },
             ),

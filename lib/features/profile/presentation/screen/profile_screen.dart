@@ -87,7 +87,9 @@ class ProfileScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GoRouter.of(context).push('/personal-info');
+                        },
                         icon: Icon(HugeIcons.strokeRoundedEdit03, size: 24),
                       ),
                     ),
@@ -136,6 +138,7 @@ class ProfileScreen extends StatelessWidget {
                                 color: AppColors.myGrey2,
                               ),
                             ),
+                            const SizedBox(height: 0),
                             const InfoCard(
                               icon: HugeIcons.strokeRoundedGlobe,
                               title: 'محل سکونت',
@@ -161,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.myGrey6),
@@ -170,13 +173,25 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 8,
                   children: [
-                    Text(
-                      'راه های ارتباطی',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                        color: AppColors.myGrey2,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'راه های ارتباطی',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: AppColors.myGrey2,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            HugeIcons.strokeRoundedEdit03,
+                            color: AppColors.myGrey,
+                          ),
+                        ),
+                      ],
                     ),
                     const InfoCard(
                       icon: HugeIcons.strokeRoundedCall02,
