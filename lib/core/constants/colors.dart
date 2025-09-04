@@ -14,6 +14,7 @@ class AppColors {
   static const Color myGrey6 = Color(0xFFEEEEEE);
   static const Color myGrey7 = Color(0xFFFAFAFA);
   static const Color blue = Color(0xFF3CB8F4);
+  static const Color blueLight = Color(0xFFEBF7FD);
   static const Color yellow = Color(0xFFF4C33C);
 
   // ========= Success =========

@@ -185,7 +185,9 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            GoRouter.of(context).push('/contact-way');
+                          },
                           icon: Icon(
                             HugeIcons.strokeRoundedEdit03,
                             color: AppColors.myGrey,
@@ -258,10 +260,12 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Button(
                 width: double.infinity,
-                backgroundColor: AppColors.error200.withValues(alpha: 0.1),
+                backgroundColor: AppColors.error25,
                 textColor: AppColors.error200,
                 label: 'خروج از حساب کاربری',
-                onPressed: () {},
+                onPressed: () {
+                  _handleLogoutModal(context);
+                },
               ),
             ],
           ),
@@ -269,4 +273,111 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+//! Logout Modal
+void _handleLogoutModal(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (BuildContext context) {
+      return Stack(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  transform: GradientRotation(0.4),
+                  colors: [
+                    Color(0xFFF9A825).withValues(alpha: 0.4),
+                    Colors.black.withValues(alpha: 0.1),
+                    Color(0xFF00ACC1).withValues(alpha: 0.4),
+                  ],
+                  stops: [0.0, 0.4, 1.0],
+                ),
+              ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Material(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'خروج از حساب کاربری',
+                      style: TextStyle(
+                        color: AppColors.myGrey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'آیا از خروج از حساب کاربری مطمئن هستید؟',
+                          style: TextStyle(
+                            color: AppColors.myGrey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w100,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Button(
+                                backgroundColor: AppColors.blueLight,
+                                textColor: AppColors.blue,
+                                label: 'انصراف',
+                                onPressed: () {
+                                  context.pop();
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Button(
+                                backgroundColor: AppColors.error25,
+                                textColor: AppColors.error200,
+                                label: 'خروج',
+                                onPressed: () {
+                                  context.pop();
+                                  print('خروج از حساب کاربری');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
