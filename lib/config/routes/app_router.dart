@@ -7,6 +7,7 @@ import 'package:steam/features/contact_way/presentation/screen/contact_way_scree
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
 import 'package:steam/features/personal_info/presentation/screen/personal_info_screen.dart';
 import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
+import 'package:steam/features/representative/presentation/screen/representative_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: RoutePaths.home,
@@ -23,6 +24,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.contactUs,
       builder: (context, state) => const ContactUsScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.representative,
+      builder: (context, state) => const RepresentativeScreen(),
     ),
 
     //! Profile

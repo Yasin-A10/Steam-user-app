@@ -11,6 +11,7 @@ class CustomInputField extends StatelessWidget {
   final Color textColor;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
+  final TextDirection textDirection;
 
   const CustomInputField({
     super.key,
@@ -23,43 +24,47 @@ class CustomInputField extends StatelessWidget {
     this.textColor = AppColors.myGrey,
     this.obscureText = false,
     this.validator,
+    this.textDirection = TextDirection.rtl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      style: TextStyle(color: textColor),
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: AppColors.myGrey2),
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        prefixIcon: Icon(icon, color: iconColor),
+    return Directionality(
+      textDirection: textDirection,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: TextStyle(color: textColor),
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: AppColors.myGrey2),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          prefixIcon: Icon(icon, color: iconColor),
 
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: borderColor.withValues(alpha: 0.3)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: borderColor, width: 2),
-        ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: borderColor.withValues(alpha: 0.3)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: borderColor, width: 2),
+          ),
 
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.error200),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.error200, width: 2),
-        ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: AppColors.error200),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: AppColors.error200, width: 2),
+          ),
 
-        errorStyle: const TextStyle(color: AppColors.error200, fontSize: 12),
-        filled: true,
-        fillColor: AppColors.myGrey7,
+          errorStyle: const TextStyle(color: AppColors.error200, fontSize: 12),
+          filled: true,
+          fillColor: AppColors.myGrey7,
+        ),
       ),
     );
   }
