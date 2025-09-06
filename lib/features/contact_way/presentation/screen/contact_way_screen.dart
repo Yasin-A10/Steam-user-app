@@ -96,10 +96,24 @@ class ContactWayScreen extends StatelessWidget {
                       textDirection: TextDirection.ltr,
                     ),
                     CustomInputField(
-                      label: 'Twitter',
-                      icon: HugeIcons.strokeRoundedNewTwitter,
+                      label: 'Rubika',
+                      icon: HugeIcons.strokeRoundedRubiksCube,
                       validator: (value) =>
-                          AppValidator.email(value, fieldName: 'Twitter'),
+                          AppValidator.email(value, fieldName: 'Rubika'),
+                      textDirection: TextDirection.ltr,
+                    ),
+                    CustomInputField(
+                      label: 'Bale',
+                      icon: HugeIcons.strokeRoundedCheckmarkSquare01,
+                      validator: (value) =>
+                          AppValidator.email(value, fieldName: '‌Bale'),
+                      textDirection: TextDirection.ltr,
+                    ),
+                    CustomInputField(
+                      label: 'Eitaa',
+                      icon: HugeIcons.strokeRoundedFlower,
+                      validator: (value) =>
+                          AppValidator.email(value, fieldName: 'Eitaa'),
                       textDirection: TextDirection.ltr,
                     ),
                   ],

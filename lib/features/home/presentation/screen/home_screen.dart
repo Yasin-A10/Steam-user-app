@@ -76,15 +76,18 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: 16,
-          children: [
-            MainPageCard(),
-            MainPageCard(),
-            MainPageCard(),
-            MainPageCard(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 16,
+            children: [
+              MainPageCard(),
+              MainPageCard(),
+              MainPageCard(),
+              MainPageCard(),
+            ],
+          ),
         ),
       ),
     );

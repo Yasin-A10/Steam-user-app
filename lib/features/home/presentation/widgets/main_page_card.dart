@@ -9,12 +9,12 @@ class MainPageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing: 12,
-        children: [
-          Row(
+    return Column(
+      spacing: 12,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
@@ -86,7 +86,10 @@ class MainPageCard extends StatelessWidget {
               ),
             ],
           ),
-          Column(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 8,
             children: [
@@ -108,9 +111,41 @@ class MainPageCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(color: AppColors.myGrey5, thickness: 1),
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Button(
+            label: 'مشاهده نمونه کارها',
+            onPressed: () {},
+            width: double.infinity,
+            backgroundColor: AppColors.orangeLight,
+            textColor: AppColors.orange,
+          ),
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return Image.asset(
+                'assets/images/main-card-list.jpg',
+                height: 200,
+                width: 200,
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(width: 8);
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: const Divider(color: AppColors.myGrey5, thickness: 1),
+        ),
+      ],
     );
   }
 }
@@ -151,7 +186,7 @@ void _handleCardModal(BuildContext context) {
               child: Padding(
                 padding: const EdgeInsets.only(
                   top: 16,
-                  bottom: 16,
+                  bottom: 20,
                   left: 16,
                   right: 16,
                 ),
