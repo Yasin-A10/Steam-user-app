@@ -1,4 +1,7 @@
 class RoutePaths {
+  static const String login = '/login';
+  static const String getName = '/get-name';
+
   static const String home = '/';
   static const String aboutUs = '/about-us';
   static const String contactUs = '/contact-us';

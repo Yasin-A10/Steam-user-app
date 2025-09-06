@@ -2,6 +2,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:steam/config/routes/route_paths.dart';
 import 'package:steam/features/about_us/about_us_screen.dart';
+import 'package:steam/features/auth/presentation/screen/get_name_screen.dart';
+import 'package:steam/features/auth/presentation/screen/login_screen.dart';
 import 'package:steam/features/contact_us/screen/contact_us_screen.dart';
 import 'package:steam/features/contact_way/presentation/screen/contact_way_screen.dart';
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
@@ -12,6 +14,16 @@ import 'package:steam/features/representative/presentation/screen/representative
 final GoRouter appRouter = GoRouter(
   initialLocation: RoutePaths.home,
   routes: [
+    //! Auth
+    GoRoute(
+      path: RoutePaths.login,
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.getName,
+      builder: (context, state) => const GetNameScreen(),
+    ),
+
     //! Main
     GoRoute(
       path: RoutePaths.home,
