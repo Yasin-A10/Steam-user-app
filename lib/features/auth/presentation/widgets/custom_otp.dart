@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
+import 'package:steam/core/constants/colors.dart';
+
+class CustomOtpField extends StatefulWidget {
+  /// کنترلر برای دسترسی به مقدار وارد شده
+  final TextEditingController? controller;
+
+  /// تابعی که پس از وارد کردن کامل کد، اجرا می‌شود
+  final void Function(String)? onCompleted;
+
+  final int length;
+
+  const CustomOtpField({
+    super.key,
+    this.controller,
+    this.onCompleted,
+    this.length = 5,
+  });
+
+  @override
+  State<CustomOtpField> createState() => _CustomOtpFieldState();
+}
+
+class _CustomOtpFieldState extends State<CustomOtpField> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 60,
+      textStyle: const TextStyle(fontSize: 22, color: AppColors.myGrey),
+      decoration: BoxDecoration(
+        color: AppColors.myGrey6,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.transparent),
+      ),
+    );
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Pinput(
+        length: widget.length,
+        controller: widget.controller,
+        focusNode: _focusNode,
+        defaultPinTheme: defaultPinTheme,
+        onCompleted: widget.onCompleted,
+
+        focusedPinTheme: defaultPinTheme.copyWith(
+          decoration: defaultPinTheme.decoration!.copyWith(
+            border: Border.all(color: AppColors.orange, width: 2),
+          ),
+        ),
+        submittedPinTheme: defaultPinTheme.copyWith(
+          decoration: defaultPinTheme.decoration!.copyWith(
+            color: AppColors.myGrey6,
+          ),
+        ),
+        errorPinTheme: defaultPinTheme.copyWith(
+          decoration: defaultPinTheme.decoration!.copyWith(
+            border: Border.all(color: AppColors.error200, width: 2),
+          ),
+        ),
+
+        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+        showCursor: true,
+      ),
+    );
+  }
+}

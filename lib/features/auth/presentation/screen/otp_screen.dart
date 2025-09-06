@@ -1,18 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:steam/core/constants/colors.dart';
+import 'package:steam/core/widgets/button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hugeicons/hugeicons.dart';
-import 'package:steam/core/constants/colors.dart';
-import 'package:steam/core/utils/validators.dart';
-import 'package:steam/core/widgets/button.dart';
-import 'package:steam/core/widgets/inputs/input_form_feild.dart';
+import 'package:steam/features/auth/presentation/widgets/custom_otp.dart';
 
-GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class OtpScreen extends StatelessWidget {
+  const OtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Text(
-                        'لطفاً شماره همراه خود را وارد کنید',
+                        'لطفاً کد تایید را وارد کنید',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w300,
@@ -139,28 +137,20 @@ class LoginScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Form(
-                          key: loginFormKey,
+                          key: otpFormKey,
                           child: Column(
                             children: [
-                              CustomInputField(
-                                label: 'شماره همراه',
-                                icon: HugeIcons.strokeRoundedSmartPhone01,
-                                keyboardType: TextInputType.phone,
-                                validator: (value) => AppValidator.phoneNumber(
-                                  value,
-                                  fieldName: 'شماره همراه',
-                                ),
-                              ),
+                              CustomOtpField(),
                               const SizedBox(height: 16),
                               Button(
                                 width: double.infinity,
-                                label: 'ثبت نام',
+                                label: 'ورود',
                                 textColor: AppColors.white,
                                 backgroundColor: AppColors.orange,
                                 onPressed: () {
-                                  if (!loginFormKey.currentState!.validate())
+                                  if (!otpFormKey.currentState!.validate())
                                     return;
-                                  context.push('/otp');
+                                  context.push('/get-name');
                                 },
                               ),
                             ],
