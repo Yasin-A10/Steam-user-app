@@ -1,4 +1,4 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:steam/config/routes/route_paths.dart';
 import 'package:steam/features/about_us/about_us_screen.dart';
@@ -12,7 +12,10 @@ import 'package:steam/features/personal_info/presentation/screen/personal_info_s
 import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
 import 'package:steam/features/representative/presentation/screen/representative_screen.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 final GoRouter appRouter = GoRouter(
+  navigatorKey: navigatorKey,
   initialLocation: RoutePaths.home,
   routes: [
     //! Auth

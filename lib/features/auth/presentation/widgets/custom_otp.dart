@@ -3,12 +3,8 @@ import 'package:pinput/pinput.dart';
 import 'package:steam/core/constants/colors.dart';
 
 class CustomOtpField extends StatefulWidget {
-  /// کنترلر برای دسترسی به مقدار وارد شده
   final TextEditingController? controller;
-
-  /// تابعی که پس از وارد کردن کامل کد، اجرا می‌شود
   final void Function(String)? onCompleted;
-
   final int length;
 
   const CustomOtpField({

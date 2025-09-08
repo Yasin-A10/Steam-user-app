@@ -1,20 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:steam/core/cities/bloc/cities_bloc.dart';
+import 'package:steam/core/cities/bloc/cities_status.dart';
 import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/validators.dart';
 import 'package:steam/core/widgets/inputs/drop_down.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
 
-List<String> items = ['تهران', 'کرمانشاه', 'کرمان', 'یزد'];
-
 GlobalKey<FormState> personalFormKey = GlobalKey<FormState>();
 
-class PersonalInfoScreen extends StatelessWidget {
+class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
 
   @override
+  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
+}
+
+class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+  String? selectedProvince;
+  String? selectedCity;
+
+  @override
+  void initState() {
+    super.initState();
+    final citiesBloc = BlocProvider.of<CitiesBloc>(context);
+    citiesBloc.add(LoadProvincesEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    //! Provide Bloc
+    // final citiesBloc = BlocProvider.of<CitiesBloc>(context);
+    // citiesBloc.add(LoadProvincesEvent());
+
+    //! UI
     return Scaffold(
       appBar: AppBar(
         title: const Text('اطلاعات شخصی'),
@@ -61,21 +82,169 @@ class PersonalInfoScreen extends StatelessWidget {
                           AppValidator.userName(value, fieldName: 'بیوگرافی'),
                     ),
                     const SizedBox(height: 16),
-                    CustomDropdown(
-                      label: 'استان محل سکونت',
-                      icon: HugeIcons.strokeRoundedMapPin,
-                      items: items,
-                      onChanged: (value) {},
+                    // CustomDropdown(
+                    //   label: 'استان محل سکونت',
+                    //   icon: HugeIcons.strokeRoundedMapPin,
+                    //   items: items,
+                    //   onChanged: (value) {},
+                    // ),
+                    // const SizedBox(height: 16),
+                    // CustomDropdown(
+                    //   label: 'شهر محل سکونت',
+                    //   icon: HugeIcons.strokeRoundedMapPin,
+                    //   items: items,
+                    //   onChanged: (value) {},
+                    // ),
+                    BlocBuilder<CitiesBloc, CitiesState>(
+                      builder: (context, state) {
+                        List<String> provincesItems = [];
+                        bool isLoadingProvinces = false;
+
+                        if (state.provincesStatus is ProvincesLoading) {
+                          isLoadingProvinces = true;
+                        } else if (state.provincesStatus is ProvincesSuccess) {
+                          final ProvincesSuccess provincesSuccess =
+                              state.provincesStatus as ProvincesSuccess;
+                          provincesItems = provincesSuccess.provinces
+                              .map((e) => e.name)
+                              .toList();
+                        } else if (state.provincesStatus is ProvincesError) {
+                          final ProvincesError provincesError =
+                              state.provincesStatus as ProvincesError;
+                          provincesItems = provincesError.message.split(',');
+                        }
+
+                        return CustomDropdown(
+                          label: 'استان محل سکونت',
+                          icon: HugeIcons.strokeRoundedMapPin,
+                          items: provincesItems,
+                          value: selectedProvince,
+                          isLoading: isLoadingProvinces,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedProvince = value;
+                              selectedCity = null;
+                            });
+
+                            //! for get province id
+                            if (state.provincesStatus is ProvincesSuccess) {
+                              final provincesSuccess =
+                                  state.provincesStatus as ProvincesSuccess;
+                              final selectedProvinceId = provincesSuccess
+                                  .provinces
+                                  .firstWhere((p) => p.name == value)
+                                  .id;
+
+                              BlocProvider.of<CitiesBloc>(context).add(
+                                LoadProvincesWithCitiesEvent(
+                                  provinceId: selectedProvinceId,
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      },
                     ),
+
                     const SizedBox(height: 16),
-                    CustomDropdown(
-                      label: 'شهر محل سکونت',
-                      icon: HugeIcons.strokeRoundedMapPin,
-                      items: items,
-                      onChanged: (value) {},
+
+                    // BlocBuilder<CitiesBloc, CitiesState>(
+                    //   builder: (context, state) {
+                    //     List<String> cityItems = [];
+                    //     bool isCityLoading = false;
+
+                    //     if (state.provincesWithCitiesStatus
+                    //         is ProvincesWithCitiesLoading) {
+                    //       isCityLoading = true;
+                    //     } else if (state.provincesWithCitiesStatus
+                    //         is ProvincesWithCitiesSuccess) {
+                    //       final provincesWithCitiesSuccess =
+                    //           state.provincesWithCitiesStatus
+                    //               as ProvincesWithCitiesSuccess;
+                    //       cityItems = provincesWithCitiesSuccess
+                    //           .provincesWithCities
+                    //           .map((e) => e.name)
+                    //           .toList();
+
+                    //       // Reset selectedCity when a new province is selected
+                    //       if (!cityItems.contains(selectedCity)) {
+                    //         selectedCity = null;
+                    //       }
+                    //     }
+
+                    //     return CustomDropdown(
+                    //       label: 'شهر محل سکونت',
+                    //       icon: HugeIcons.strokeRoundedMapPin,
+                    //       items: cityItems,
+                    //       value: selectedCity,
+                    //       isLoading: isCityLoading,
+                    //       onChanged: (value) {
+                    //         setState(() {
+                    //           selectedCity = value;
+                    //         });
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+                    // The corrected BlocBuilder for the cities dropdown
+                    BlocBuilder<CitiesBloc, CitiesState>(
+                      builder: (context, state) {
+                        List<String> cityItems = [];
+                        bool isCityLoading = false;
+
+                        // First, handle the loading state
+                        if (state.provincesWithCitiesStatus
+                            is ProvincesWithCitiesLoading) {
+                          isCityLoading = true;
+                        }
+                        // Then, handle the success state
+                        else if (state.provincesWithCitiesStatus
+                            is ProvincesWithCitiesSuccess) {
+                          final success =
+                              state.provincesWithCitiesStatus
+                                  as ProvincesWithCitiesSuccess;
+
+                          // Make sure a province is selected before trying to get cities
+                          if (selectedProvince != null) {
+                            // Find the selected province from the list.
+                            final selectedProvinceModel = success
+                                .provincesWithCities
+                                .firstWhere(
+                                  (p) => p.name == selectedProvince,
+                                  // Add a fallback in case the province is not found
+                                  orElse: () =>
+                                      success.provincesWithCities.first,
+                                );
+
+                            // Get the list of city names from the found province
+                            cityItems = selectedProvinceModel.cities
+                                .map((c) => c.name)
+                                .toList();
+                          }
+
+                          // Check if the currently selected city is still in the list of available cities
+                          if (selectedCity != null &&
+                              !cityItems.contains(selectedCity)) {
+                            selectedCity = null;
+                          }
+                        }
+
+                        return CustomDropdown(
+                          label: 'شهر محل سکونت',
+                          icon: HugeIcons.strokeRoundedMapPin,
+                          items: cityItems,
+                          value: selectedCity,
+                          isLoading: isCityLoading,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCity = value;
+                            });
+                          },
+                        );
+                      },
                     ),
+
                     const SizedBox(height: 16),
-                    //TODO: add Date of birth
                     CustomDropdown(
                       label: 'جنسیت',
                       icon: HugeIcons.strokeRoundedManWoman,

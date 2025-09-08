@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:steam/config/routes/app_router.dart';
 import 'package:steam/config/theme/app_theme.dart';
+import 'package:steam/core/cities/bloc/cities_bloc.dart';
+import 'package:steam/core/network/session_manager.dart';
+import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:steam/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // for dependency injection
-  // await setup();
-  // runApp(MultiBlocProvider(
-  //   providers: [
-  //     BlocProvider(
-  //       create: (_) => locator<HomeBloc>(),
-  //     ),
-  //     BlocProvider(
-  //       create: (_) => locator<DetailBloc>(),
-  //     ),
-  //     BlocProvider(
-  //       create: (_) => locator<AllCryptoBloc>(),
-  //     ),
-  //   ],
-  // child: const MyApp(),
-  // ));
-  runApp(const MyApp());
+  //* for dependency injection
+  await setup();
+
+  await SessionManager.instance.init();
+
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => locator<ProfileBloc>()),
+        BlocProvider(create: (_) => locator<CitiesBloc>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
