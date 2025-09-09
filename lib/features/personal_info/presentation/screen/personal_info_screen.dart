@@ -70,14 +70,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('اطلاعات با موفقیت آپدیت شد!'),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColors.success200,
                   ),
                 );
               } else if (state is PersonalInfoError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('خطا: ${state.message}'),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.error200,
                   ),
                 );
               }
@@ -91,7 +91,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         width: 24,
                         height: 24,
                         child: CircularProgressIndicator(
-                          color: Colors.amber,
+                          color: AppColors.orange,
                           strokeWidth: 2,
                         ),
                       )

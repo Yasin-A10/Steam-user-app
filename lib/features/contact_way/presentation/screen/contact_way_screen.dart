@@ -6,6 +6,8 @@ import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/utils/validators.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
+import 'package:steam/features/contact_way/data/model/contact_model.dart';
+import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
@@ -45,13 +47,65 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(HugeIcons.strokeRoundedArrowRight01, size: 28),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            context.pop();
+            BlocProvider.of<ProfileBloc>(context).add(LoadProfileEvent());
+          },
         ),
         actions: [
-          IconButton(
-            icon: const Icon(HugeIcons.strokeRoundedTick02, size: 28),
-            onPressed: () {
-              if (!contactFormKey.currentState!.validate()) return;
+          BlocConsumer<ContactBloc, ContactState>(
+            listener: (context, state) {
+              if (state is ContactSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('اطلاعات با موفقیت آپدیت شد!'),
+                    backgroundColor: AppColors.success200,
+                  ),
+                );
+              } else if (state is ContactError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('خطا: ${state.message}'),
+                    backgroundColor: AppColors.error200,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              final isLoading = state is ContactLoading;
+
+              return IconButton(
+                icon: isLoading
+                    ? SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: AppColors.orange,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Icon(HugeIcons.strokeRoundedTick02, size: 28),
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        if (!contactFormKey.currentState!.validate()) return;
+
+                        final updatedUser = ContactModel(
+                          username: phoneNumberController.text.trim(),
+                          email: emailController.text.trim(),
+                          eitaaId: emailController.text.trim(),
+                          telegramId: telegramController.text.trim(),
+                          bale: baleController.text.trim(),
+                          rubika: rubikaController.text.trim(),
+                          linkedIn: linkedinController.text.trim(),
+                          instagram: instagramController.text.trim(),
+                        );
+
+                        BlocProvider.of<ContactBloc>(
+                          context,
+                        ).add(UpdateContactEvent(userInfo: updatedUser));
+                      },
+              );
             },
           ),
         ],
@@ -165,24 +219,30 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                             label: 'Rubika',
                             icon: HugeIcons.strokeRoundedRubiksCube,
                             controller: rubikaController,
-                            validator: (value) =>
-                                AppValidator.email(value, fieldName: 'Rubika'),
+                            validator: (value) => AppValidator.userName(
+                              value,
+                              fieldName: 'Rubika',
+                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Bale',
                             icon: HugeIcons.strokeRoundedCheckmarkSquare01,
                             controller: baleController,
-                            validator: (value) =>
-                                AppValidator.email(value, fieldName: '‌Bale'),
+                            validator: (value) => AppValidator.userName(
+                              value,
+                              fieldName: '‌Bale',
+                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Eitaa',
                             icon: HugeIcons.strokeRoundedFlower,
                             controller: eitaaController,
-                            validator: (value) =>
-                                AppValidator.email(value, fieldName: 'Eitaa'),
+                            validator: (value) => AppValidator.userName(
+                              value,
+                              fieldName: 'Eitaa',
+                            ),
                             textDirection: TextDirection.ltr,
                           ),
                         ],

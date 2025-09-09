@@ -4,6 +4,9 @@ import 'package:steam/core/cities/data/repository/cities_repository_impl.dart';
 import 'package:steam/core/cities/data/source/cities_api_provider.dart';
 import 'package:steam/core/cities/domain/repository/cities_repository.dart';
 import 'package:steam/core/cities/domain/usecase/cities_usecase.dart';
+import 'package:steam/features/contact_way/data/repository/update_contact_ripository_impl.dart';
+import 'package:steam/features/contact_way/data/source/update_contact.dart';
+import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
 import 'package:steam/features/personal_info/data/repository/update_info_repository_impl.dart';
 import 'package:steam/features/personal_info/data/source/update_personal_info.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
@@ -24,6 +27,9 @@ setup() {
   locator.registerSingleton<UpdatePersonalInfoApiProvider>(
     UpdatePersonalInfoApiProvider(),
   );
+  locator.registerSingleton<UpdateContactApiProvider>(
+    UpdateContactApiProvider(),
+  );
 
   //* Repository
   locator.registerSingleton<UserRepository>(
@@ -37,6 +43,9 @@ setup() {
   );
   locator.registerSingleton<UpdateInfoRepositoryImpl>(
     UpdateInfoRepositoryImpl(apiProvider: locator()),
+  );
+  locator.registerSingleton<UpdateContactRepositoryImpl>(
+    UpdateContactRepositoryImpl(apiProvider: locator()),
   );
 
   //* UseCase
@@ -63,4 +72,5 @@ setup() {
   locator.registerSingleton<PersonalInfoBloc>(
     PersonalInfoBloc(repository: locator()),
   );
+  locator.registerSingleton<ContactBloc>(ContactBloc(repository: locator()));
 }
