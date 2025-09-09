@@ -77,6 +77,7 @@ import 'package:hugeicons/hugeicons.dart';
 
 class CustomDropdown extends StatelessWidget {
   final String label;
+  final Text? hint;
   final IconData icon;
   final Color iconColor;
   final Color borderColor;
@@ -89,6 +90,7 @@ class CustomDropdown extends StatelessWidget {
   const CustomDropdown({
     super.key,
     required this.label,
+    this.hint,
     required this.icon,
     this.iconColor = AppColors.myGrey,
     this.borderColor = AppColors.myGrey6,
@@ -102,6 +104,7 @@ class CustomDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
+      hint: hint,
       value: value,
       items: isLoading
           ? [

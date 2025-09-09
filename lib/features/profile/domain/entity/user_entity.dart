@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
-  final String id;
-  final String username;
+  final String? id;
+  final String? username;
   final String? picture;
   final String? fullName;
   final String? email;
-  final int walletBalance;
+  final int? walletBalance;
   final String? biography;
   final String? resume;
   final String? linkedIn;
@@ -20,12 +20,12 @@ class UserEntity extends Equatable {
   final String? rubika;
 
   const UserEntity({
-    required this.id,
-    required this.username,
+    this.id,
+    this.username,
     this.picture,
     this.fullName,
     this.email,
-    required this.walletBalance,
+    this.walletBalance,
     this.biography,
     this.resume,
     this.linkedIn,

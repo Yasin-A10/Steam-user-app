@@ -5,6 +5,7 @@ import 'package:steam/config/routes/app_router.dart';
 import 'package:steam/config/theme/app_theme.dart';
 import 'package:steam/core/cities/bloc/cities_bloc.dart';
 import 'package:steam/core/network/session_manager.dart';
+import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/locator.dart';
 
@@ -21,6 +22,7 @@ void main() async {
       providers: [
         BlocProvider(create: (_) => locator<ProfileBloc>()),
         BlocProvider(create: (_) => locator<CitiesBloc>()),
+        BlocProvider(create: (_) => locator<PersonalInfoBloc>()),
       ],
       child: const MyApp(),
     ),

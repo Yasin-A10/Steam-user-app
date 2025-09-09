@@ -2,12 +2,12 @@ import 'package:steam/features/profile/domain/entity/user_entity.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
-    required super.id,
-    required super.username,
+    super.id,
+    super.username,
     super.picture,
     super.fullName,
     super.email,
-    required super.walletBalance,
+    super.walletBalance,
     super.biography,
     super.resume,
     super.linkedIn,
