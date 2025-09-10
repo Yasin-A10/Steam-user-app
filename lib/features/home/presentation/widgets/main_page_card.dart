@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
+import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/social_icon_list.dart';
+import 'package:steam/features/home/data/model/content_post_model.dart';
+import 'package:steam/features/home/presentation/widgets/expandable_text.dart';
 
 class MainPageCard extends StatelessWidget {
-  const MainPageCard({super.key});
+  final PostData post;
+  const MainPageCard({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -23,14 +28,24 @@ class MainPageCard extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        _handleCardModal(context);
+                        _handleCardModal(context, post);
                       },
-                      child: Image.asset(
-                        'assets/images/image2.png',
-                        width: 54,
-                        height: 54,
-                        fit: BoxFit.cover,
-                      ),
+                      child: post.owner.picture != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                post.owner.picture!,
+                                width: 54,
+                                height: 54,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/images/image4.png',
+                              width: 54,
+                              height: 54,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 8),
                     Column(
@@ -38,7 +53,7 @@ class MainPageCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'شادمهر عقیلی',
+                          post.owner.fullName ?? 'بدون نام',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -46,7 +61,7 @@ class MainPageCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'خواننده معاصر',
+                          post.owner.biography ?? 'بدون توضیحات',
                           style: TextStyle(
                             color: AppColors.myGrey2,
                             fontSize: 12,
@@ -66,7 +81,7 @@ class MainPageCard extends StatelessWidget {
                         spacing: 8,
                         children: [
                           Text(
-                            '۲۲۰',
+                            formatNumberToPersian(post.coinBalance ?? 0),
                             style: TextStyle(
                               color: AppColors.yellow,
                               fontSize: 16,
@@ -88,45 +103,40 @@ class MainPageCard extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 8,
+            spacing: 4,
             children: [
               Text(
-                'بشنو از گل',
+                post.title ?? 'خالی',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.myGrey,
                 ),
               ),
-              Text(
-                'لورم ایپسوم متنی دلخواه برای چاپ و طراحی گرافیکی و کلا طراحی بصری',
-                style: TextStyle(
-                  color: AppColors.myGrey2,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
+              ExpandableText(text: post.body ?? 'خالی', trimLength: 200),
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Button(
-            label: 'مشاهده نمونه کارها',
-            onPressed: () {},
-            width: double.infinity,
-            backgroundColor: AppColors.orangeLight,
-            textColor: AppColors.orange,
-          ),
-        ),
+        post.link == null
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Button(
+                  label: post.linkTitle ?? 'بدون لینک',
+                  onPressed: () {},
+                  width: double.infinity,
+                  backgroundColor: AppColors.orangeLight,
+                  textColor: AppColors.orange,
+                ),
+              ),
         SizedBox(
           height: 200,
           child: ListView.separated(
             shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             scrollDirection: Axis.horizontal,
             itemCount: 3,
             itemBuilder: (context, index) {
@@ -150,7 +160,7 @@ class MainPageCard extends StatelessWidget {
   }
 }
 
-void _handleCardModal(BuildContext context) {
+void _handleCardModal(BuildContext context, PostData post) {
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -195,18 +205,28 @@ void _handleCardModal(BuildContext context) {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/image2.png',
-                      height: 185,
-                      width: 185,
-                      fit: BoxFit.cover,
-                    ),
+                    post.owner.picture != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              post.owner.picture!,
+                              height: 185,
+                              width: 185,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/image2.png',
+                            height: 185,
+                            width: 185,
+                            fit: BoxFit.cover,
+                          ),
                     Column(
                       spacing: 4,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'شادمهر عقیلی',
+                          post.owner.fullName ?? 'بدون نام',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -214,7 +234,7 @@ void _handleCardModal(BuildContext context) {
                           ),
                         ),
                         Text(
-                          'طراحی و توسعه',
+                          post.owner.biography ?? 'بدون توضیحات',
                           style: TextStyle(
                             color: AppColors.myGrey2,
                             fontSize: 14,
@@ -232,7 +252,7 @@ void _handleCardModal(BuildContext context) {
                           spacing: 8,
                           children: [
                             Text(
-                              '۰۹۱۲۳۴۵۶۷۸',
+                              post.owner.fullName ?? 'بدون نام',
                               style: TextStyle(
                                 color: AppColors.myGrey,
                                 fontSize: 15,
@@ -252,7 +272,7 @@ void _handleCardModal(BuildContext context) {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              'Omid.test@gmaIl.com',
+                              post.owner.biography ?? 'بدون توضیحات',
                               style: TextStyle(
                                 color: AppColors.myGrey,
                                 fontSize: 15,
@@ -269,13 +289,15 @@ void _handleCardModal(BuildContext context) {
                       ],
                     ),
                     SocialIconList(),
-                    Button(
-                      onPressed: () {},
-                      label: 'مشاهده رزومه',
-                      textColor: AppColors.orange,
-                      backgroundColor: AppColors.orangeLight,
-                      width: double.infinity,
-                    ),
+                    post.linkTitle != null
+                        ? Button(
+                            onPressed: () {},
+                            label: post.linkTitle ?? 'بدون لینک',
+                            textColor: AppColors.orange,
+                            backgroundColor: AppColors.orangeLight,
+                            width: double.infinity,
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),

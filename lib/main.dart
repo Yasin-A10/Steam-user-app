@@ -8,6 +8,7 @@ import 'package:steam/core/network/session_manager.dart';
 import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:steam/features/home/presentation/bloc/content_bloc.dart';
 import 'package:steam/locator.dart';
 
 void main() async {
@@ -25,6 +26,7 @@ void main() async {
         BlocProvider(create: (_) => locator<CitiesBloc>()),
         BlocProvider(create: (_) => locator<PersonalInfoBloc>()),
         BlocProvider(create: (_) => locator<ContactBloc>()),
+        BlocProvider(create: (_) => locator<ContentBloc>()),
       ],
       child: const MyApp(),
     ),

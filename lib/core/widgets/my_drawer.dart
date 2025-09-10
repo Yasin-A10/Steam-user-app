@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
+import 'package:steam/core/utils/number_formater.dart';
+import 'package:steam/features/profile/domain/entity/user_entity.dart';
+import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -10,71 +15,127 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final drawerBg = theme.scaffoldBackgroundColor;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Drawer(
-      width: 280,
+      width: screenWidth * 0.75,
       backgroundColor: drawerBg,
       child: Column(
         children: [
-          DrawerHeader(
-            padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
-            margin: const EdgeInsets.only(bottom: 24),
-            decoration: BoxDecoration(),
-            child: Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state.profileStatus is ProfileLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state.profileStatus is ProfileError) {
+                return Center(
+                  child: Text(
+                    (state.profileStatus as ProfileError).message,
+                    style: const TextStyle(color: AppColors.error200),
+                  ),
+                );
+              }
+              if (state.profileStatus is ProfileSuccess) {
+                final ProfileSuccess profileSuccess =
+                    state.profileStatus as ProfileSuccess;
+                final UserEntity user = profileSuccess.userEntity;
+                return Container(
+                  height: 200,
+                  padding: EdgeInsets.zero,
+                  child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/images/image2.png',
-                          width: 72,
-                          height: 72,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'شادمهر عقیلی',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.myGrey,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '۰۹۸۳۶۲۸۴۰۱۸',
-                        style: TextStyle(
-                          color: AppColors.myGrey2,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
+                      user.picture != null
+                          ? Image.network(user.picture!, fit: BoxFit.cover)
+                          : Image.asset(
+                              'assets/images/image2.png',
+                              fit: BoxFit.cover,
+                            ),
+
+                      Container(color: Colors.white.withValues(alpha: 0.8)),
+
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 50.0,
+                            left: 24,
+                            right: 24,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: user.picture != null
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            child: Image.network(
+                                              user.picture!,
+                                              width: 72,
+                                              height: 72,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            'assets/images/image2.png',
+                                            width: 72,
+                                            height: 72,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    user.fullName ?? 'بدون نام',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.myGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    formatNumberToPersianWithoutSeparator(
+                                      user.username,
+                                    ),
+                                    style: TextStyle(
+                                      color: AppColors.myGrey2,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: AppColors.myGrey6,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  HugeIcons.strokeRoundedShare08,
+                                  size: 24,
+                                  color: AppColors.myGrey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.myGrey3,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      HugeIcons.strokeRoundedShare08,
-                      size: 24,
-                      color: AppColors.myGrey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 0.0),
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
             child: ListTile(
               leading: Icon(
                 HugeIcons.strokeRoundedUserCircle,
