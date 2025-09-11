@@ -2,13 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:steam/core/constants/api_info.dart';
 import 'package:steam/core/network/session_manager.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:steam/features/personal_info/data/model/update_personal_info_model.dart';
+import 'package:steam/features/profile/data/model/update_resume_model.dart';
 
-class UpdatePersonalInfoApiProvider {
+class UpdateResumeApiProvider {
   final Dio _dio = Dio();
   final String baseUrl = ApiInfo.baseUrl;
 
-  UpdatePersonalInfoApiProvider() {
+  UpdateResumeApiProvider() {
     _dio.interceptors.add(
       PrettyDioLogger(
         requestBody: true,
@@ -34,22 +34,24 @@ class UpdatePersonalInfoApiProvider {
     );
   }
 
-  Future<UpdatePersonalInfoModel> updatePersonalInfo(
-    UpdatePersonalInfoModel user,
-  ) async {
+  Future<UpdateResumeModel?> updateResume(UpdateResumeModel resumeModel) async {
     try {
-      final data = user.picture != null
-          ? await user.toFormData()
-          : user.toJson();
+      final Object data;
+      if (resumeModel.resume != null) {
+        data = await resumeModel.toFormData();
+      } else {
+        data = {"resume": null};
+      }
 
-      final response = await _dio.patch(
+      await _dio.patch(
         '$baseUrl/me/${SessionManager.userId}/',
         data: data,
+        // options: Options(headers: {'Content-Type': 'multipart/form-data'}),
       );
 
-      return UpdatePersonalInfoModel.fromJson(response.data);
+      return null;
     } catch (e) {
-      throw Exception('Failed to update personal info... ${e.toString()}');
+      throw Exception('Failed to update resume... ${e.toString()}');
     }
   }
 }

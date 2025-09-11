@@ -13,6 +13,8 @@ import 'package:steam/features/home/presentation/bloc/content_bloc.dart';
 import 'package:steam/features/personal_info/data/repository/update_info_repository_impl.dart';
 import 'package:steam/features/personal_info/data/source/update_personal_info.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
+import 'package:steam/features/profile/data/repository/update_resume_repository_impl.dart';
+import 'package:steam/features/profile/data/source/update_resume.dart';
 import 'package:steam/features/profile/data/source/user_api_provider.dart';
 import 'package:steam/features/profile/data/repository/user_repository_impl.dart';
 import 'package:steam/features/profile/domain/repository/user_repository.dart';
@@ -34,6 +36,7 @@ setup() {
     UpdateContactApiProvider(),
   );
   locator.registerSingleton<ContentPostApiProvider>(ContentPostApiProvider());
+  locator.registerSingleton<UpdateResumeApiProvider>(UpdateResumeApiProvider());
 
   //* Repository
   locator.registerSingleton<UserRepository>(
@@ -54,6 +57,9 @@ setup() {
   locator.registerSingleton<ContentPostRepositoryImpl>(
     ContentPostRepositoryImpl(apiProvider: locator()),
   );
+  locator.registerSingleton<UpdateResumeRepositoryImpl>(
+    UpdateResumeRepositoryImpl(apiProvider: locator()),
+  );
 
   //* UseCase
   locator.registerSingleton<GetUserUseCase>(
@@ -68,7 +74,7 @@ setup() {
 
   //* Bloc
   locator.registerSingleton<ProfileBloc>(
-    ProfileBloc(getUserUseCase: locator()),
+    ProfileBloc(getUserUseCase: locator(), updateResumeRepository: locator()),
   );
   locator.registerSingleton<CitiesBloc>(
     CitiesBloc(

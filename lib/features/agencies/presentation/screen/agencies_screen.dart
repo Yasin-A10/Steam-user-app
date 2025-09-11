@@ -10,8 +10,8 @@ import 'package:steam/core/widgets/social_icon_list.dart';
 
 const List<String> items = ['تهران', 'قم', 'کرمانشاه', 'کرمان'];
 
-class RepresentativeScreen extends StatelessWidget {
-  const RepresentativeScreen({super.key});
+class AgenciesScreen extends StatelessWidget {
+  const AgenciesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

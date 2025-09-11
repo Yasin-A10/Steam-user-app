@@ -58,6 +58,8 @@ dependencies:
   video_player: ^2.10.0
   chewie: ^1.13.0
   clipboard: ^2.0.2
+  file_picker: ^10.3.3
+  syncfusion_flutter_pdfviewer: ^31.1.18
 
 dev_dependencies:
   flutter_test:

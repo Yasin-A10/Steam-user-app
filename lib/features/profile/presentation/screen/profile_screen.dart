@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,20 +9,71 @@ import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/info_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:steam/features/profile/data/model/update_resume_model.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
+import 'package:steam/features/profile/presentation/bloc/update_resume_status.dart';
 import 'package:steam/features/profile/presentation/widgets/copy_button.dart';
+import 'package:file_picker/file_picker.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    //! Provide State
-    final profileBloc = BlocProvider.of<ProfileBloc>(context);
-    profileBloc.add(LoadProfileEvent());
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    //! Provide Blocs
+    BlocProvider.of<ProfileBloc>(context).add(LoadProfileEvent());
+  }
+
+  Future<void> _pickAndUploadResume(context) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+
+        final resumeModel = UpdateResumeModel(resume: file);
+
+        BlocProvider.of<ProfileBloc>(
+          context,
+        ).add(UpdateResumeEvent(updateResumeModel: resumeModel));
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("در حال آپلود رزومه...")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("خطا در انتخاب فایل: $e")));
+    }
+  }
+
+  Future<void> _deleteResume(context) async {
+    try {
+      BlocProvider.of<ProfileBloc>(context).add(
+        UpdateResumeEvent(updateResumeModel: UpdateResumeModel(resume: null)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("خطا در حذف رزومه: $e")));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //! UI
     return Scaffold(
       appBar: AppBar(
@@ -317,28 +369,81 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 0,
                             children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  HugeIcons.strokeRoundedFileUpload,
-                                  color: AppColors.myGrey,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  HugeIcons.strokeRoundedView,
-                                  color: AppColors.myGrey,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  HugeIcons.strokeRoundedDelete02,
-                                  color: AppColors.error200,
-                                ),
+                              BlocConsumer<ProfileBloc, ProfileState>(
+                                listener: (context, state) {
+                                  if (state.resumeStatus is ResumeSuccess) {
+                                    final success =
+                                        state.resumeStatus as ResumeSuccess;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          success.isDeleted
+                                              ? 'رزومه با موفقیت حذف شد'
+                                              : 'رزومه با موفقیت آپلود شد',
+                                        ),
+                                      ),
+                                    );
+                                    BlocProvider.of<ProfileBloc>(
+                                      context,
+                                    ).add(LoadProfileEvent());
+                                  } else if (state.resumeStatus
+                                      is ResumeError) {
+                                    final errorMessage =
+                                        (state.resumeStatus as ResumeError)
+                                            .message;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          '$errorMessage خطا در آپلود یا حذف رزومه',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                builder: (context, state) {
+                                  final isLoading =
+                                      state.profileStatus is ProfileLoading;
+
+                                  return Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: isLoading
+                                            ? null
+                                            : () =>
+                                                  _pickAndUploadResume(context),
+                                        icon: Icon(
+                                          HugeIcons.strokeRoundedFileUpload,
+                                          color: AppColors.myGrey,
+                                        ),
+                                      ),
+
+                                      if (user.resume != null)
+                                        IconButton(
+                                          onPressed: () {
+                                            GoRouter.of(context).push(
+                                              '/resume-viewer',
+                                              extra: user.resume,
+                                            );
+                                          },
+                                          icon: Icon(
+                                            HugeIcons.strokeRoundedView,
+                                            color: AppColors.myGrey,
+                                          ),
+                                        ),
+
+                                      IconButton(
+                                        onPressed: isLoading
+                                            ? null
+                                            : () => _deleteResume(context),
+                                        icon: Icon(
+                                          HugeIcons.strokeRoundedDelete02,
+                                          color: AppColors.error200,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                             ],
                           ),

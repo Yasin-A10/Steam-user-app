@@ -14,4 +14,5 @@ class RoutePaths {
 
   static const String imageViewer = '/image-viewer';
   static const String videoPlayer = '/video-player';
+  static const String resumeViewer = '/resume-viewer';
 }

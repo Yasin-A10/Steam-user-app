@@ -12,7 +12,8 @@ import 'package:steam/features/home/presentation/screen/Video_player_screen.dart
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
 import 'package:steam/features/personal_info/presentation/screen/personal_info_screen.dart';
 import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
-import 'package:steam/features/representative/presentation/screen/representative_screen.dart';
+import 'package:steam/features/profile/presentation/screen/resume_viewer.dart';
+import 'package:steam/features/agencies/presentation/screen/agencies_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -49,7 +50,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: RoutePaths.representative,
-      builder: (context, state) => const RepresentativeScreen(),
+      builder: (context, state) => const AgenciesScreen(),
     ),
     GoRoute(
       path: RoutePaths.imageViewer,
@@ -74,6 +75,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.contactWay,
       builder: (context, state) => const ContactWayScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.resumeViewer,
+      builder: (context, state) =>
+          PdfViewerScreen(fileUrl: state.extra as String),
     ),
   ],
   //* errorBuilder: (context, state) => const NotFoundScreen(),

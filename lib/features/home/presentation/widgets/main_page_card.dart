@@ -43,7 +43,7 @@ class MainPageCard extends StatelessWidget {
                               ),
                             )
                           : Image.asset(
-                              'assets/images/image4.png',
+                              'assets/images/image1.png',
                               width: 54,
                               height: 54,
                               fit: BoxFit.cover,
@@ -279,7 +279,7 @@ void _handleCardModal(BuildContext context, PostData post) {
                             ),
                           )
                         : Image.asset(
-                            'assets/images/image2.png',
+                            'assets/images/image1.png',
                             height: 185,
                             width: 185,
                             fit: BoxFit.cover,
