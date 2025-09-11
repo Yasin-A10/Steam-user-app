@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
-import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/utils/validators.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
 import 'package:steam/features/contact_way/data/model/contact_model.dart';
@@ -92,13 +91,27 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
 
                         final updatedUser = ContactModel(
                           username: phoneNumberController.text.trim(),
-                          email: emailController.text.trim(),
-                          eitaaId: emailController.text.trim(),
-                          telegramId: telegramController.text.trim(),
-                          bale: baleController.text.trim(),
-                          rubika: rubikaController.text.trim(),
-                          linkedIn: linkedinController.text.trim(),
-                          instagram: instagramController.text.trim(),
+                          email: emailController.text.trim().isNotEmpty
+                              ? emailController.text.trim()
+                              : null,
+                          eitaaId: eitaaController.text.trim().isNotEmpty
+                              ? eitaaController.text.trim()
+                              : null,
+                          telegramId: telegramController.text.trim().isNotEmpty
+                              ? telegramController.text.trim()
+                              : null,
+                          bale: baleController.text.trim().isNotEmpty
+                              ? baleController.text.trim()
+                              : null,
+                          rubika: rubikaController.text.trim().isNotEmpty
+                              ? rubikaController.text.trim()
+                              : null,
+                          linkedIn: linkedinController.text.trim().isNotEmpty
+                              ? linkedinController.text.trim()
+                              : null,
+                          instagram: instagramController.text.trim().isNotEmpty
+                              ? instagramController.text.trim()
+                              : null,
                         );
 
                         BlocProvider.of<ContactBloc>(
@@ -128,8 +141,7 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
             final UserEntity user = profileSuccess.userEntity;
 
             if (phoneNumberController.text.isEmpty) {
-              phoneNumberController.text =
-                  formatNumberToPersianWithoutSeparator(user.username);
+              phoneNumberController.text = user.username!;
               emailController.text = user.email ?? '';
               telegramController.text = user.telegramId ?? '';
               instagramController.text = user.instagram ?? '';
@@ -162,8 +174,6 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                             label: 'ایمیل',
                             icon: HugeIcons.strokeRoundedMailAtSign02,
                             controller: emailController,
-                            validator: (value) =>
-                                AppValidator.email(value, fieldName: 'ایمیل'),
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -189,60 +199,36 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                             label: 'Telegram',
                             icon: HugeIcons.strokeRoundedTelegram,
                             controller: telegramController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: 'Telegram',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Instagram',
                             icon: HugeIcons.strokeRoundedInstagram,
                             controller: instagramController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: 'Instagram',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'LinkedIn',
                             icon: HugeIcons.strokeRoundedLinkedin01,
                             controller: linkedinController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: 'LinkedIn',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Rubika',
                             icon: HugeIcons.strokeRoundedRubiksCube,
                             controller: rubikaController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: 'Rubika',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Bale',
                             icon: HugeIcons.strokeRoundedCheckmarkSquare01,
                             controller: baleController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: '‌Bale',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                           CustomInputField(
                             label: 'Eitaa',
                             icon: HugeIcons.strokeRoundedFlower,
                             controller: eitaaController,
-                            validator: (value) => AppValidator.userName(
-                              value,
-                              fieldName: 'Eitaa',
-                            ),
                             textDirection: TextDirection.ltr,
                           ),
                         ],

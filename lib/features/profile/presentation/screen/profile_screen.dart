@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
+import 'package:steam/features/profile/presentation/widgets/copy_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -207,7 +208,7 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         left: 16,
                         right: 16,
-                        bottom: 16,
+                        bottom: 8,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -248,6 +249,47 @@ class ProfileScreen extends StatelessWidget {
                           InfoCard(
                             icon: HugeIcons.strokeRoundedMailAtSign01,
                             title: user.email!,
+                          ),
+                          Row(
+                            children: [
+                              user.telegramId != null
+                                  ? CopyIconButton(
+                                      text: user.telegramId!,
+                                      icon: HugeIcons.strokeRoundedTelegram,
+                                    )
+                                  : const SizedBox(),
+                              user.instagram != null
+                                  ? CopyIconButton(
+                                      text: user.instagram!,
+                                      icon: HugeIcons.strokeRoundedInstagram,
+                                    )
+                                  : const SizedBox(),
+                              user.linkedIn != null
+                                  ? CopyIconButton(
+                                      text: user.linkedIn!,
+                                      icon: HugeIcons.strokeRoundedLinkedin01,
+                                    )
+                                  : const SizedBox(),
+                              user.bale != null
+                                  ? CopyIconButton(
+                                      text: user.bale!,
+                                      icon: HugeIcons
+                                          .strokeRoundedCheckmarkSquare01,
+                                    )
+                                  : const SizedBox(),
+                              user.rubika != null
+                                  ? CopyIconButton(
+                                      text: user.rubika!,
+                                      icon: HugeIcons.strokeRoundedRubiksCube,
+                                    )
+                                  : const SizedBox(),
+                              user.eitaaId != null
+                                  ? CopyIconButton(
+                                      text: user.eitaaId!,
+                                      icon: HugeIcons.strokeRoundedFlower,
+                                    )
+                                  : const SizedBox(),
+                            ],
                           ),
                         ],
                       ),
