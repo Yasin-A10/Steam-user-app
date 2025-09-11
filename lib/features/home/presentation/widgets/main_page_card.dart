@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/number_formater.dart';
@@ -6,6 +7,7 @@ import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/social_icon_list.dart';
 import 'package:steam/features/home/data/model/content_post_model.dart';
 import 'package:steam/features/home/presentation/widgets/expandable_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPageCard extends StatelessWidget {
   final PostData post;
@@ -126,31 +128,92 @@ class MainPageCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Button(
                   label: post.linkTitle ?? 'بدون لینک',
-                  onPressed: () {},
+                  onPressed: () async {
+                    final url = post.link;
+                    if (url != null && url.isNotEmpty) {
+                      final uri = Uri.parse(url);
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(
+                          uri,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('لینک قابل باز شدن نیست'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('لینک قابل باز شدن نیست'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
                   width: double.infinity,
                   backgroundColor: AppColors.orangeLight,
                   textColor: AppColors.orange,
                 ),
               ),
+
         SizedBox(
           height: 200,
           child: ListView.separated(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
             scrollDirection: Axis.horizontal,
-            itemCount: 3,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: post.contents!.length,
             itemBuilder: (context, index) {
-              return Image.asset(
-                'assets/images/main-card-list.jpg',
-                height: 200,
-                width: 200,
+              final content = post.contents![index];
+              final hasPreview =
+                  content.preview != null && content.preview!.isNotEmpty;
+
+              return InkWell(
+                onTap: () {
+                  if (hasPreview) {
+                    GoRouter.of(
+                      context,
+                    ).push('/video-player', extra: content.content!);
+                  } else {
+                    GoRouter.of(
+                      context,
+                    ).push('/image-viewer', extra: content.content!);
+                  }
+                },
+                child: SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          hasPreview ? content.preview! : content.content!,
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      if (hasPreview)
+                        const Center(
+                          child: Icon(
+                            HugeIcons.strokeRoundedPlayCircle02,
+                            size: 36,
+                            color: AppColors.blueLight,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               );
             },
-            separatorBuilder: (context, index) {
-              return const SizedBox(width: 8);
-            },
+            separatorBuilder: (_, __) => const SizedBox(width: 8),
           ),
         ),
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: const Divider(color: AppColors.myGrey5, thickness: 1),

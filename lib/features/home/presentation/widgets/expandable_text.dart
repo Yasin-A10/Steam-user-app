@@ -5,11 +5,7 @@ class ExpandableText extends StatefulWidget {
   final String text;
   final int trimLength;
 
-  const ExpandableText({
-    super.key,
-    required this.text,
-    this.trimLength = 200, // پیش‌فرض 200 کاراکتر
-  });
+  const ExpandableText({super.key, required this.text, this.trimLength = 200});
 
   @override
   State<ExpandableText> createState() => _ExpandableTextState();
@@ -29,6 +25,7 @@ class _ExpandableTextState extends State<ExpandableText> {
       children: [
         Text(
           displayText,
+          textAlign: TextAlign.justify,
           style: const TextStyle(
             fontSize: 14,
             color: AppColors.myGrey2,

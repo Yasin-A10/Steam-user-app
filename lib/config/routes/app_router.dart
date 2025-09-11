@@ -7,6 +7,8 @@ import 'package:steam/features/auth/presentation/screen/login_screen.dart';
 import 'package:steam/features/auth/presentation/screen/otp_screen.dart';
 import 'package:steam/features/contact_us/screen/contact_us_screen.dart';
 import 'package:steam/features/contact_way/presentation/screen/contact_way_screen.dart';
+import 'package:steam/features/home/presentation/screen/Image_view_screen.dart';
+import 'package:steam/features/home/presentation/screen/Video_player_screen.dart';
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
 import 'package:steam/features/personal_info/presentation/screen/personal_info_screen.dart';
 import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
@@ -48,6 +50,16 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.representative,
       builder: (context, state) => const RepresentativeScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.imageViewer,
+      builder: (context, state) =>
+          ImageViewScreen(imageUrl: state.extra as String),
+    ),
+    GoRoute(
+      path: RoutePaths.videoPlayer,
+      builder: (context, state) =>
+          VideoPlayerScreen(videoUrl: state.extra as String),
     ),
 
     //! Profile

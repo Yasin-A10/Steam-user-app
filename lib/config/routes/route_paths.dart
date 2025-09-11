@@ -11,4 +11,7 @@ class RoutePaths {
   static const String profile = '/profile';
   static const String personalInfo = '/personal-info';
   static const String contactWay = '/contact-way';
+
+  static const String imageViewer = '/image-viewer';
+  static const String videoPlayer = '/video-player';
 }
