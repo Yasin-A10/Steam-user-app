@@ -20,10 +20,18 @@ class PdfViewerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: const Text('نمایش PDF'),
+        backgroundColor: AppColors.orange,
+        title: const Text(
+          'نمایش PDF',
+          style: TextStyle(color: AppColors.white),
+        ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(HugeIcons.strokeRoundedArrowRight01, size: 28),
+          icon: const Icon(
+            HugeIcons.strokeRoundedArrowRight01,
+            size: 28,
+            color: AppColors.white,
+          ),
           onPressed: () => context.pop(),
         ),
       ),

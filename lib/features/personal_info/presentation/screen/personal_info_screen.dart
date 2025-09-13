@@ -270,13 +270,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               List<String> cityItems = [];
                               bool isCityLoading = false;
 
-                              // First, handle the loading state
+                              if (state.provincesWithCitiesStatus
+                                  is ProvincesWithCitiesError) {
+                                final error =
+                                    state.provincesWithCitiesStatus
+                                        as ProvincesWithCitiesError;
+                                cityItems = error.message.split(',');
+                              }
+
                               if (state.provincesWithCitiesStatus
                                   is ProvincesWithCitiesLoading) {
                                 isCityLoading = true;
-                              }
-                              // Then, handle the success state
-                              else if (state.provincesWithCitiesStatus
+                              } else if (state.provincesWithCitiesStatus
                                   is ProvincesWithCitiesSuccess) {
                                 final success =
                                     state.provincesWithCitiesStatus
@@ -291,12 +296,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                             success.provincesWithCities.first,
                                       );
 
-                                  // لیست شهرها
+                                  //* cities List
                                   cityItems = selectedProvinceModel.cities
                                       .map((c) => c.name)
                                       .toList();
 
-                                  // 👈 اینجا cityMap عمومی رو پر کن
+                                  //* Fill in the public cityMap here.
                                   cityMap = {
                                     for (var c in selectedProvinceModel.cities)
                                       c.name: c.id,

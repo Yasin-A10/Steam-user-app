@@ -10,6 +10,7 @@ import 'package:steam/features/contact_way/presentation/screen/contact_way_scree
 import 'package:steam/features/home/presentation/screen/Image_view_screen.dart';
 import 'package:steam/features/home/presentation/screen/Video_player_screen.dart';
 import 'package:steam/features/home/presentation/screen/home_screen.dart';
+import 'package:steam/features/not_found_screen.dart';
 import 'package:steam/features/personal_info/presentation/screen/personal_info_screen.dart';
 import 'package:steam/features/profile/presentation/screen/profile_screen.dart';
 import 'package:steam/features/profile/presentation/screen/resume_viewer.dart';
@@ -82,5 +83,5 @@ final GoRouter appRouter = GoRouter(
           PdfViewerScreen(fileUrl: state.extra as String),
     ),
   ],
-  //* errorBuilder: (context, state) => const NotFoundScreen(),
+  errorBuilder: (context, state) => const NotFoundScreen(),
 );

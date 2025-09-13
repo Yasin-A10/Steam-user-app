@@ -3,11 +3,11 @@ import 'package:steam/core/constants/api_info.dart';
 import 'package:steam/core/network/session_manager.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-class UserApiProvider {
+class AgenciesApiProvider {
   final Dio _dio = Dio();
   final String baseUrl = ApiInfo.baseUrl;
 
-  UserApiProvider() {
+  AgenciesApiProvider() {
     _dio.interceptors.add(
       PrettyDioLogger(
         requestBody: true,
@@ -34,8 +34,11 @@ class UserApiProvider {
     );
   }
 
-  Future<dynamic> getUser() async {
-    final response = await _dio.get('$baseUrl/me/${SessionManager.userId}');
+  Future<dynamic> getAgencies(int cityId) async {
+    final response = await _dio.get(
+      '$baseUrl/agencies/',
+      queryParameters: {'city': cityId},
+    );
     return response;
   }
 }

@@ -4,6 +4,9 @@ import 'package:steam/core/cities/data/repository/cities_repository_impl.dart';
 import 'package:steam/core/cities/data/source/cities_api_provider.dart';
 import 'package:steam/core/cities/domain/repository/cities_repository.dart';
 import 'package:steam/core/cities/domain/usecase/cities_usecase.dart';
+import 'package:steam/features/agencies/data/repository/agencies_repository_impl.dart';
+import 'package:steam/features/agencies/data/source/agencies_api_provider.dart';
+import 'package:steam/features/agencies/presentation/bloc/agencies_bloc.dart';
 import 'package:steam/features/contact_way/data/repository/update_contact_ripository_impl.dart';
 import 'package:steam/features/contact_way/data/source/update_contact.dart';
 import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
@@ -37,6 +40,7 @@ setup() {
   );
   locator.registerSingleton<ContentPostApiProvider>(ContentPostApiProvider());
   locator.registerSingleton<UpdateResumeApiProvider>(UpdateResumeApiProvider());
+  locator.registerSingleton<AgenciesApiProvider>(AgenciesApiProvider());
 
   //* Repository
   locator.registerSingleton<UserRepository>(
@@ -59,6 +63,9 @@ setup() {
   );
   locator.registerSingleton<UpdateResumeRepositoryImpl>(
     UpdateResumeRepositoryImpl(apiProvider: locator()),
+  );
+  locator.registerSingleton<AgenciesRepositoryImpl>(
+    AgenciesRepositoryImpl(apiProvider: locator()),
   );
 
   //* UseCase
@@ -87,4 +94,5 @@ setup() {
   );
   locator.registerSingleton<ContactBloc>(ContactBloc(repository: locator()));
   locator.registerSingleton<ContentBloc>(ContentBloc(repository: locator()));
+  locator.registerSingleton<AgenciesBloc>(AgenciesBloc(repository: locator()));
 }
