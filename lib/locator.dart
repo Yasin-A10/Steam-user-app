@@ -4,9 +4,19 @@ import 'package:steam/core/cities/data/repository/cities_repository_impl.dart';
 import 'package:steam/core/cities/data/source/cities_api_provider.dart';
 import 'package:steam/core/cities/domain/repository/cities_repository.dart';
 import 'package:steam/core/cities/domain/usecase/cities_usecase.dart';
+import 'package:steam/core/network/auth_api_client.dart';
 import 'package:steam/features/agencies/data/repository/agencies_repository_impl.dart';
 import 'package:steam/features/agencies/data/source/agencies_api_provider.dart';
 import 'package:steam/features/agencies/presentation/bloc/agencies_bloc.dart';
+import 'package:steam/features/auth/data/repository/login_repository_impl.dart';
+import 'package:steam/features/auth/data/repository/logout_repository_impl.dart';
+import 'package:steam/features/auth/data/repository/otp_repository_impl.dart';
+import 'package:steam/features/auth/data/source/login_api_provider.dart';
+import 'package:steam/features/auth/data/source/logout_api_provider.dart';
+import 'package:steam/features/auth/data/source/otp_api_provider.dart';
+import 'package:steam/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/logout/logout_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:steam/features/contact_way/data/repository/update_contact_ripository_impl.dart';
 import 'package:steam/features/contact_way/data/source/update_contact.dart';
 import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
@@ -27,6 +37,10 @@ import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 GetIt locator = GetIt.instance;
 
 setup() {
+  //* for api client
+  locator.registerSingleton<AuthApiClient>(AuthApiClient());
+
+  //* API Providers
   locator.registerSingleton<UserApiProvider>(UserApiProvider());
   locator.registerSingleton<ProvinceApiProvider>(ProvinceApiProvider());
   locator.registerSingleton<ProvinceWithCitiesApiProvider>(
@@ -41,6 +55,9 @@ setup() {
   locator.registerSingleton<ContentPostApiProvider>(ContentPostApiProvider());
   locator.registerSingleton<UpdateResumeApiProvider>(UpdateResumeApiProvider());
   locator.registerSingleton<AgenciesApiProvider>(AgenciesApiProvider());
+  locator.registerSingleton<OtpApiProvider>(OtpApiProvider());
+  locator.registerSingleton<LoginApiProvider>(LoginApiProvider());
+  locator.registerSingleton<LogoutApiProvider>(LogoutApiProvider());
 
   //* Repository
   locator.registerSingleton<UserRepository>(
@@ -66,6 +83,15 @@ setup() {
   );
   locator.registerSingleton<AgenciesRepositoryImpl>(
     AgenciesRepositoryImpl(apiProvider: locator()),
+  );
+  locator.registerSingleton<OtpRepositoryImpl>(
+    OtpRepositoryImpl(apiProvider: locator()),
+  );
+  locator.registerSingleton<LoginRepositoryImpl>(
+    LoginRepositoryImpl(apiProvider: locator()),
+  );
+  locator.registerSingleton<LogoutRepositoryImpl>(
+    LogoutRepositoryImpl(apiProvider: locator()),
   );
 
   //* UseCase
@@ -95,4 +121,7 @@ setup() {
   locator.registerSingleton<ContactBloc>(ContactBloc(repository: locator()));
   locator.registerSingleton<ContentBloc>(ContentBloc(repository: locator()));
   locator.registerSingleton<AgenciesBloc>(AgenciesBloc(repository: locator()));
+  locator.registerSingleton<OtpBloc>(OtpBloc(repository: locator()));
+  locator.registerSingleton<LoginBloc>(LoginBloc(repository: locator()));
+  locator.registerSingleton<LogoutBloc>(LogoutBloc(repository: locator()));
 }

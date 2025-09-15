@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:steam/config/routes/route_paths.dart';
+import 'package:steam/core/network/session_manager.dart';
 import 'package:steam/features/about_us/about_us_screen.dart';
 import 'package:steam/features/auth/presentation/screen/get_name_screen.dart';
 import 'package:steam/features/auth/presentation/screen/login_screen.dart';
@@ -18,6 +19,12 @@ import 'package:steam/features/agencies/presentation/screen/agencies_screen.dart
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+final List<String> publicRoutes = [
+  RoutePaths.login,
+  RoutePaths.otp,
+  RoutePaths.getName,
+];
+
 final GoRouter appRouter = GoRouter(
   navigatorKey: navigatorKey,
   initialLocation: RoutePaths.home,
@@ -29,7 +36,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: RoutePaths.otp,
-      builder: (context, state) => const OtpScreen(),
+      builder: (context, state) => OtpScreen(phone: state.extra as String),
     ),
     GoRoute(
       path: RoutePaths.getName,
@@ -83,5 +90,20 @@ final GoRouter appRouter = GoRouter(
           PdfViewerScreen(fileUrl: state.extra as String),
     ),
   ],
+
+  //! Redirect
+  redirect: (context, state) {
+    final isLoggedIn = SessionManager.instance.isLoggedIn();
+    final currentPath =
+        state.matchedLocation; //! fucking important -> MatchedLocation
+
+    final isPublicRoute = publicRoutes.contains(currentPath);
+
+    if (!isLoggedIn && !isPublicRoute) return '/login';
+    if (isLoggedIn && currentPath == '/login') return '/';
+    return null;
+  },
+
+  //! Not found
   errorBuilder: (context, state) => const NotFoundScreen(),
 );

@@ -6,6 +6,9 @@ import 'package:steam/config/theme/app_theme.dart';
 import 'package:steam/core/cities/bloc/cities_bloc.dart';
 import 'package:steam/core/network/session_manager.dart';
 import 'package:steam/features/agencies/presentation/bloc/agencies_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/logout/logout_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/otp/otp_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
@@ -18,6 +21,7 @@ void main() async {
   //* for dependency injection
   await setup();
 
+  //* for shared_preferences
   await SessionManager.instance.init();
 
   runApp(
@@ -29,6 +33,9 @@ void main() async {
         BlocProvider(create: (_) => locator<ContactBloc>()),
         BlocProvider(create: (_) => locator<ContentBloc>()),
         BlocProvider(create: (_) => locator<AgenciesBloc>()),
+        BlocProvider(create: (_) => locator<OtpBloc>()),
+        BlocProvider(create: (_) => locator<LoginBloc>()),
+        BlocProvider(create: (_) => locator<LogoutBloc>()),
       ],
       child: const MyApp(),
     ),

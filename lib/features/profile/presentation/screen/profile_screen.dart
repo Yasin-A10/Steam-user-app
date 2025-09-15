@@ -9,6 +9,7 @@ import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/info_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/logout/logout_bloc.dart';
 import 'package:steam/features/profile/data/model/update_resume_model.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
@@ -554,12 +555,38 @@ void _handleLogoutModal(BuildContext context) {
                             ),
                             SizedBox(width: 8),
                             Expanded(
-                              child: Button(
-                                backgroundColor: AppColors.error25,
-                                textColor: AppColors.error200,
-                                label: 'خروج',
-                                onPressed: () {
-                                  context.pop();
+                              child: BlocConsumer<LogoutBloc, LogoutState>(
+                                listener: (context, state) {
+                                  if (state is LogoutStateSuccess) {
+                                    GoRouter.of(context).go('/login');
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'شما با موفقیت از حساب کاربری خارج شدید.',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  if (state is LogoutStateError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(state.message)),
+                                    );
+                                  }
+                                },
+                                builder: (context, state) {
+                                  return Button(
+                                    backgroundColor: AppColors.error25,
+                                    textColor: AppColors.error200,
+                                    label: 'خروج',
+                                    onPressed: state is LogoutStateLoading
+                                        ? null
+                                        : () {
+                                            BlocProvider.of<LogoutBloc>(
+                                              context,
+                                            ).add(LogoutEventRequest());
+                                          },
+                                  );
                                 },
                               ),
                             ),
