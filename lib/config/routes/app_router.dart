@@ -94,8 +94,7 @@ final GoRouter appRouter = GoRouter(
   //! Redirect
   redirect: (context, state) {
     final isLoggedIn = SessionManager.instance.isLoggedIn();
-    final currentPath =
-        state.matchedLocation; //! fucking important -> MatchedLocation
+    final currentPath = state.path; //! fucking important -> MatchedLocation
 
     final isPublicRoute = publicRoutes.contains(currentPath);
 
