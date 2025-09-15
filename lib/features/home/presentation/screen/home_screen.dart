@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/my_drawer.dart';
@@ -74,13 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        title: InkWell(
-          onTap: () => GoRouter.of(context).go('/login'),
-          child: SvgPicture.asset(
-            'assets/images/steam.svg',
-            width: 150,
-            height: 150,
-          ),
+        title: SvgPicture.asset(
+          'assets/images/steam.svg',
+          width: 150,
+          height: 150,
         ),
         actions: [
           BlocBuilder<ProfileBloc, ProfileState>(

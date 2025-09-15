@@ -1,21 +1,85 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/validators.dart';
 import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:steam/features/auth/data/model/get_name_model.dart';
+import 'package:steam/features/auth/presentation/bloc/get_name/get_name_bloc.dart';
+import 'dart:io';
 
-GlobalKey<FormState> getNameFormKey = GlobalKey<FormState>();
-
-class GetNameScreen extends StatelessWidget {
+class GetNameScreen extends StatefulWidget {
   const GetNameScreen({super.key});
 
   @override
+  State<GetNameScreen> createState() => _GetNameScreenState();
+}
+
+class _GetNameScreenState extends State<GetNameScreen> {
+  GlobalKey<FormState> getNameFormKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  File? _pickedImage;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _handleEditImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+
+    if (pickedFile != null) {
+      final file = File(pickedFile.path);
+      setState(() {
+        _pickedImage = file;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final displayImage = _pickedImage != null
+        ? Container(
+            height: 140,
+            width: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                image: FileImage(_pickedImage!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        : Container(
+            height: 140,
+            width: 140,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.myGrey5, width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              HugeIcons.strokeRoundedUser02,
+              color: AppColors.myGrey,
+              size: 80,
+            ),
+          );
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -114,34 +178,14 @@ class GetNameScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(
-                        'assets/images/steam.svg',
-                        height: 120,
-                        width: 120,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(height: 120),
-                      Container(
-                        height: 140,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.myGrey5,
-                            width: 1,
-                          ),
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          HugeIcons.strokeRoundedUser02,
-                          color: AppColors.myGrey,
-                          size: 80,
-                        ),
-                      ),
+                      const SizedBox(height: 150),
+                      displayImage, //! picked image
                       Transform(
                         transform: Matrix4.translationValues(0, -24, 0),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _handleEditImage();
+                          },
                           icon: Icon(
                             HugeIcons.strokeRoundedPen01,
                             color: AppColors.myGrey,
@@ -176,6 +220,7 @@ class GetNameScreen extends StatelessWidget {
                             children: [
                               CustomInputField(
                                 label: 'نام و نام خانوادگی',
+                                controller: nameController,
                                 icon: HugeIcons.strokeRoundedUser,
                                 validator: (value) => AppValidator.userName(
                                   value,
@@ -183,15 +228,58 @@ class GetNameScreen extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              Button(
-                                width: double.infinity,
-                                label: 'ورود',
-                                textColor: AppColors.white,
-                                backgroundColor: AppColors.orange,
-                                onPressed: () {
-                                  if (!getNameFormKey.currentState!.validate())
-                                    return;
-                                  context.go('/');
+                              BlocConsumer<GetNameBloc, GetNameState>(
+                                listener: (context, state) {
+                                  if (state is GetNameSuccess) {
+                                    GoRouter.of(context).go('/');
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'اطلاعات با موفقیت آپدیت شد!',
+                                        ),
+                                        backgroundColor: AppColors.success200,
+                                      ),
+                                    );
+                                  }
+                                  if (state is GetNameError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(state.message),
+                                        backgroundColor: AppColors.error200,
+                                      ),
+                                    );
+                                  }
+                                },
+                                builder: (context, state) {
+                                  return Button(
+                                    width: double.infinity,
+                                    label: 'ورود',
+                                    textColor: AppColors.white,
+                                    backgroundColor: AppColors.orange,
+                                    onPressed: state is GetNameLoading
+                                        ? null
+                                        : () {
+                                            if (!getNameFormKey.currentState!
+                                                .validate()) {
+                                              return;
+                                            }
+
+                                            final updatedUser = GetNameModel(
+                                              fullName: nameController.text
+                                                  .trim(),
+                                              picture: _pickedImage,
+                                            );
+
+                                            BlocProvider.of<GetNameBloc>(
+                                              context,
+                                            ).add(
+                                              SendNameEvent(
+                                                userInfo: updatedUser,
+                                              ),
+                                            );
+                                          },
+                                  );
                                 },
                               ),
                             ],

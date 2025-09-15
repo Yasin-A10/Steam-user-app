@@ -165,6 +165,7 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                             label: 'شماره تماس',
                             icon: HugeIcons.strokeRoundedCall02,
                             controller: phoneNumberController,
+                            keyboardType: TextInputType.phone,
                             validator: (value) => AppValidator.phoneNumber(
                               value,
                               fieldName: 'شماره تماس',
@@ -174,6 +175,9 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                             label: 'ایمیل',
                             icon: HugeIcons.strokeRoundedMailAtSign02,
                             controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) =>
+                                AppValidator.email(value, fieldName: 'ایمیل'),
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

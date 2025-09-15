@@ -9,6 +9,7 @@ import 'package:steam/features/agencies/presentation/bloc/agencies_bloc.dart';
 import 'package:steam/features/auth/presentation/bloc/logout/logout_bloc.dart';
 import 'package:steam/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:steam/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/get_name/get_name_bloc.dart';
 import 'package:steam/features/contact_way/presentation/bloc/contact_bloc.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
@@ -36,6 +37,7 @@ void main() async {
         BlocProvider(create: (_) => locator<OtpBloc>()),
         BlocProvider(create: (_) => locator<LoginBloc>()),
         BlocProvider(create: (_) => locator<LogoutBloc>()),
+        BlocProvider(create: (_) => locator<GetNameBloc>()),
       ],
       child: const MyApp(),
     ),

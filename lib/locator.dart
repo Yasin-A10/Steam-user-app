@@ -33,6 +33,9 @@ import 'package:steam/features/profile/data/repository/user_repository_impl.dart
 import 'package:steam/features/profile/domain/repository/user_repository.dart';
 import 'package:steam/features/profile/domain/usecase/get_user_usecase.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:steam/features/auth/data/source/get_name_api_provider.dart';
+import 'package:steam/features/auth/data/repository/get_name_repository_impl.dart';
+import 'package:steam/features/auth/presentation/bloc/get_name/get_name_bloc.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -58,6 +61,7 @@ setup() {
   locator.registerSingleton<OtpApiProvider>(OtpApiProvider());
   locator.registerSingleton<LoginApiProvider>(LoginApiProvider());
   locator.registerSingleton<LogoutApiProvider>(LogoutApiProvider());
+  locator.registerSingleton<GetNameApiProvider>(GetNameApiProvider());
 
   //* Repository
   locator.registerSingleton<UserRepository>(
@@ -93,6 +97,9 @@ setup() {
   locator.registerSingleton<LogoutRepositoryImpl>(
     LogoutRepositoryImpl(apiProvider: locator()),
   );
+  locator.registerSingleton<GetNameRepositoryImpl>(
+    GetNameRepositoryImpl(apiProvider: locator()),
+  );
 
   //* UseCase
   locator.registerSingleton<GetUserUseCase>(
@@ -124,4 +131,5 @@ setup() {
   locator.registerSingleton<OtpBloc>(OtpBloc(repository: locator()));
   locator.registerSingleton<LoginBloc>(LoginBloc(repository: locator()));
   locator.registerSingleton<LogoutBloc>(LogoutBloc(repository: locator()));
+  locator.registerSingleton<GetNameBloc>(GetNameBloc(repository: locator()));
 }

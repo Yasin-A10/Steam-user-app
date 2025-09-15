@@ -129,10 +129,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     sigmaX: 4,
                                     sigmaY: 4,
                                   ),
-                                  child: Image.network(
-                                    user.picture!,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: user.picture != null
+                                      ? Image.network(
+                                          user.picture!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/image1.png',
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                                 Container(
                                   color: AppColors.white.withValues(alpha: 0.5),
@@ -155,10 +160,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  user.picture!,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: user.picture != null
+                                    ? Image.network(
+                                        user.picture!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        'assets/images/image1.png',
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                             ),
                           ),
