@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -25,7 +27,12 @@ class MyDrawer extends StatelessWidget {
           BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state.profileStatus is ProfileLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: LoadingAnimationWidget.twoRotatingArc(
+                    color: AppColors.orange,
+                    size: 32,
+                  ),
+                );
               }
               if (state.profileStatus is ProfileError) {
                 return Center(
@@ -46,7 +53,12 @@ class MyDrawer extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       user.picture != null
-                          ? Image.network(user.picture!, fit: BoxFit.cover)
+                          ? CachedNetworkImage(
+                              imageUrl: user.picture!,
+                              fit: BoxFit.cover,
+                              fadeInDuration: const Duration(milliseconds: 500),
+                            )
+                          // Image.network(user.picture!, fit: BoxFit.cover)
                           : Image.asset(
                               'assets/images/image2.png',
                               fit: BoxFit.cover,
@@ -75,12 +87,33 @@ class MyDrawer extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(
                                               12,
                                             ),
-                                            child: Image.network(
-                                              user.picture!,
+                                            child: CachedNetworkImage(
+                                              imageUrl: user.picture!,
                                               width: 72,
                                               height: 72,
                                               fit: BoxFit.cover,
+                                              fadeInDuration: const Duration(
+                                                milliseconds: 500,
+                                              ),
+                                              placeholder: (context, url) {
+                                                return Center(
+                                                  child:
+                                                      LoadingAnimationWidget.flickr(
+                                                        leftDotColor:
+                                                            AppColors.orange,
+                                                        rightDotColor:
+                                                            AppColors.blue,
+                                                        size: 28,
+                                                      ),
+                                                );
+                                              },
                                             ),
+                                            // Image.network(
+                                            //   user.picture!,
+                                            //   width: 72,
+                                            //   height: 72,
+                                            //   fit: BoxFit.cover,
+                                            // ),
                                           )
                                         : Image.asset(
                                             'assets/images/image2.png',

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:steam/core/widgets/button.dart';
 import 'package:steam/core/widgets/inputs/drop_down.dart';
 import 'package:steam/core/widgets/social_icon_list.dart';
 import 'package:steam/features/agencies/presentation/bloc/agencies_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AgenciesScreen extends StatefulWidget {
   const AgenciesScreen({super.key});
@@ -48,7 +50,12 @@ class _AgenciesScreenState extends State<AgenciesScreen> {
       body: BlocBuilder<AgenciesBloc, AgenciesState>(
         builder: (context, state) {
           if (state is AgenciesLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: AppColors.orange,
+                size: 32,
+              ),
+            );
           }
           if (state is AgenciesError) {
             return Center(child: Text(state.message));
@@ -73,10 +80,17 @@ class _AgenciesScreenState extends State<AgenciesScreen> {
                       fit: StackFit.expand,
                       children: [
                         agency[0].user.picture != null
-                            ? Image.network(
-                                agency[0].user.picture!,
+                            ? CachedNetworkImage(
+                                imageUrl: agency[0].user.picture!,
                                 fit: BoxFit.cover,
+                                fadeInDuration: const Duration(
+                                  milliseconds: 500,
+                                ),
                               )
+                            // Image.network(
+                            //     agency[0].user.picture!,
+                            //     fit: BoxFit.cover,
+                            //   )
                             : Image.asset(
                                 'assets/images/image1.png',
                                 fit: BoxFit.cover,
@@ -267,11 +281,27 @@ class _AgenciesScreenState extends State<AgenciesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             agency[0].user.picture != null
-                                ? Image.network(
-                                    agency[0].user.picture!,
-                                    height: 185,
-                                    width: 185,
-                                    fit: BoxFit.cover,
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: CachedNetworkImage(
+                                      imageUrl: agency[0].user.picture!,
+                                      width: 185,
+                                      height: 185,
+                                      fit: BoxFit.cover,
+                                      fadeInDuration: const Duration(
+                                        milliseconds: 500,
+                                      ),
+                                      placeholder: (context, url) => Container(
+                                        width: 185,
+                                        height: 185,
+                                        alignment: Alignment.center,
+                                        child: LoadingAnimationWidget.flickr(
+                                          leftDotColor: AppColors.orange,
+                                          rightDotColor: AppColors.blue,
+                                          size: 28,
+                                        ),
+                                      ),
+                                    ),
                                   )
                                 : Image.asset(
                                     'assets/images/image2.png',

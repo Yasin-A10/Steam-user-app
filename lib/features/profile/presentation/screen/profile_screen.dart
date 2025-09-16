@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -17,6 +18,7 @@ import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
 import 'package:steam/features/profile/presentation/bloc/update_resume_status.dart';
 import 'package:steam/features/profile/presentation/widgets/copy_button.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -88,7 +90,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state.profileStatus is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: AppColors.orange,
+                size: 32,
+              ),
+            );
           } else if (state.profileStatus is ProfileError) {
             return Center(
               child: Text(
@@ -130,9 +137,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     sigmaY: 4,
                                   ),
                                   child: user.picture != null
-                                      ? Image.network(
-                                          user.picture!,
+                                      ? CachedNetworkImage(
+                                          imageUrl: user.picture!,
                                           fit: BoxFit.cover,
+                                          fadeInDuration: const Duration(
+                                            milliseconds: 500,
+                                          ),
                                         )
                                       : Image.asset(
                                           'assets/images/image1.png',
@@ -161,9 +171,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: user.picture != null
-                                    ? Image.network(
-                                        user.picture!,
+                                    ? CachedNetworkImage(
+                                        imageUrl: user.picture!,
+                                        width: 185,
+                                        height: 185,
                                         fit: BoxFit.cover,
+                                        fadeInDuration: const Duration(
+                                          milliseconds: 500,
+                                        ),
+                                        placeholder: (context, url) =>
+                                            Container(
+                                              width: 185,
+                                              height: 185,
+                                              alignment: Alignment.center,
+                                              child:
+                                                  LoadingAnimationWidget.flickr(
+                                                    leftDotColor:
+                                                        AppColors.orange,
+                                                    rightDotColor:
+                                                        AppColors.blue,
+                                                    size: 28,
+                                                  ),
+                                            ),
                                       )
                                     : Image.asset(
                                         'assets/images/image1.png',

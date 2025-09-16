@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/button.dart';
@@ -8,6 +9,7 @@ import 'package:steam/core/widgets/social_icon_list.dart';
 import 'package:steam/features/home/data/model/content_post_model.dart';
 import 'package:steam/features/home/presentation/widgets/expandable_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MainPageCard extends StatelessWidget {
   final PostData post;
@@ -35,11 +37,31 @@ class MainPageCard extends StatelessWidget {
                       child: post.owner.picture != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                post.owner.picture!,
+                              child: CachedNetworkImage(
+                                imageUrl: post.owner.picture!,
                                 width: 54,
                                 height: 54,
                                 fit: BoxFit.cover,
+                                fadeInDuration: const Duration(
+                                  milliseconds: 500,
+                                ),
+                                placeholder: (context, url) => Container(
+                                  width: 54,
+                                  height: 54,
+                                  alignment: Alignment.center,
+                                  child: LoadingAnimationWidget.flickr(
+                                    leftDotColor: AppColors.orange,
+                                    rightDotColor: AppColors.blue,
+                                    size: 24,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                      'assets/images/image1.png',
+                                      width: 54,
+                                      height: 54,
+                                      fit: BoxFit.cover,
+                                    ),
                               ),
                             )
                           : Image.asset(
@@ -77,9 +99,10 @@ class MainPageCard extends StatelessWidget {
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.myGrey5),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         spacing: 8,
                         children: [
                           Text(
@@ -93,7 +116,7 @@ class MainPageCard extends StatelessWidget {
                           const Icon(
                             HugeIcons.strokeRoundedDollar02,
                             color: AppColors.yellow,
-                            size: 24,
+                            size: 22,
                           ),
                         ],
                       ),
@@ -190,12 +213,31 @@ class MainPageCard extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          hasPreview ? content.preview! : content.content!,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                        child:
+                            // Image.network(
+                            //   hasPreview ? content.preview! : content.content!,
+                            //   width: 200,
+                            //   height: 200,
+                            //   fit: BoxFit.cover,
+                            // ),
+                            CachedNetworkImage(
+                              imageUrl: hasPreview
+                                  ? content.preview!
+                                  : content.content!,
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                              fadeInDuration: const Duration(milliseconds: 500),
+                              placeholder: (context, url) => Container(
+                                width: 200,
+                                height: 200,
+                                alignment: Alignment.center,
+                                child: LoadingAnimationWidget.hexagonDots(
+                                  color: AppColors.orange,
+                                  size: 28,
+                                ),
+                              ),
+                            ),
                       ),
                       if (hasPreview)
                         const Center(
@@ -271,11 +313,22 @@ void _handleCardModal(BuildContext context, PostData post) {
                     post.owner.picture != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              post.owner.picture!,
-                              height: 185,
+                            child: CachedNetworkImage(
+                              imageUrl: post.owner.picture!,
                               width: 185,
+                              height: 185,
                               fit: BoxFit.cover,
+                              fadeInDuration: const Duration(milliseconds: 500),
+                              placeholder: (context, url) => Container(
+                                width: 185,
+                                height: 185,
+                                alignment: Alignment.center,
+                                child: LoadingAnimationWidget.flickr(
+                                  leftDotColor: AppColors.orange,
+                                  rightDotColor: AppColors.blue,
+                                  size: 28,
+                                ),
+                              ),
                             ),
                           )
                         : Image.asset(

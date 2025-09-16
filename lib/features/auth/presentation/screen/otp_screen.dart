@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:steam/core/constants/colors.dart';
 // import 'package:steam/core/widgets/button.dart';
 import 'package:flutter_svg/svg.dart';
@@ -195,9 +196,13 @@ class _OtpScreenState extends State<OtpScreen> {
                                         },
                                       ),
                                       if (state is LoginStateLoading)
-                                        const Padding(
+                                        Padding(
                                           padding: EdgeInsets.only(top: 16),
-                                          child: CircularProgressIndicator(),
+                                          child:
+                                              LoadingAnimationWidget.twoRotatingArc(
+                                                color: AppColors.orange,
+                                                size: 32,
+                                              ),
                                         ),
                                     ],
                                   );

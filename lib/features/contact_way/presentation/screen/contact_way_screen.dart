@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:steam/core/constants/colors.dart';
 import 'package:steam/core/utils/validators.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
@@ -78,9 +79,10 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
                     ? SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(
-                          color: AppColors.orange,
-                          strokeWidth: 2,
+                        child: LoadingAnimationWidget.flickr(
+                          leftDotColor: AppColors.orange,
+                          rightDotColor: AppColors.blue,
+                          size: 28,
                         ),
                       )
                     : const Icon(HugeIcons.strokeRoundedTick02, size: 28),
@@ -126,7 +128,12 @@ class _ContactWayScreenState extends State<ContactWayScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state.profileStatus is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: AppColors.orange,
+                size: 32,
+              ),
+            );
           } else if (state.profileStatus is ProfileError) {
             return Center(
               child: Text(

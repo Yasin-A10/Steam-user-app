@@ -11,6 +11,8 @@ import 'package:steam/core/constants/colors.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,14 +77,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: SvgPicture.asset(
           'assets/images/steam.svg',
-          width: 150,
-          height: 150,
+          width: 120,
+          height: 120,
         ),
         actions: [
           BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state.profileStatus is ProfileLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: LoadingAnimationWidget.flickr(
+                    leftDotColor: AppColors.orange,
+                    rightDotColor: AppColors.blue,
+                    size: 28,
+                  ),
+                );
               }
               if (state.profileStatus is ProfileError) {
                 return Center(
@@ -107,11 +115,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: user.picture != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                user.picture!,
-                                width: 43,
-                                height: 43,
+                              child: CachedNetworkImage(
+                                imageUrl: user.picture!,
+                                width: 54,
+                                height: 54,
                                 fit: BoxFit.cover,
+                                fadeInDuration: const Duration(
+                                  milliseconds: 500,
+                                ),
+                                placeholder: (context, url) => Container(
+                                  width: 54,
+                                  height: 54,
+                                  alignment: Alignment.center,
+                                  child: LoadingAnimationWidget.flickr(
+                                    leftDotColor: AppColors.orange,
+                                    rightDotColor: AppColors.blue,
+                                    size: 24,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                      'assets/images/image1.png',
+                                      width: 54,
+                                      height: 54,
+                                      fit: BoxFit.cover,
+                                    ),
                               ),
                             )
                           : Image.asset(
@@ -169,7 +197,12 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         builder: (context, state) {
           if (_allPosts.isEmpty && state is ContentLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: AppColors.orange,
+                size: 32,
+              ),
+            );
           }
           if (state is ContentError && _allPosts.isEmpty) {
             return Center(child: Text(state.message));
@@ -185,11 +218,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 final post = _allPosts[index];
                 return MainPageCard(post: post);
               } else {
-                // لودینگ پایین لیست
                 if (state is ContentLoading) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: LoadingAnimationWidget.twoRotatingArc(
+                        color: AppColors.orange,
+                        size: 32,
+                      ),
+                    ),
                   );
                 } else {
                   return const SizedBox.shrink();

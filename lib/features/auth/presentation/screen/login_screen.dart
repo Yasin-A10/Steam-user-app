@@ -1,8 +1,8 @@
-// import 'dart:ui';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:steam/core/constants/colors.dart';
@@ -40,46 +40,46 @@ class _LoginScreenState extends State<LoginScreen> {
           width: MediaQuery.of(context).size.width,
           child: Stack(
             children: [
-              // Positioned(
-              //   top: -140,
-              //   right: -140,
-              //   child: Container(
-              //     height: 250,
-              //     width: 250,
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-              //       color: AppColors.orange,
-              //     ),
-              //     child: BackdropFilter(
-              //       filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
-              //       child: Container(
-              //         width: 250,
-              //         height: 250,
-              //         color: Colors.transparent,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Positioned(
-              //   top: -140,
-              //   left: -140,
-              //   child: Container(
-              //     height: 250,
-              //     width: 250,
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-              //       color: AppColors.blue,
-              //     ),
-              //     child: BackdropFilter(
-              //       filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
-              //       child: Container(
-              //         width: 250,
-              //         height: 250,
-              //         color: Colors.transparent,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Positioned(
+                top: -140,
+                right: -140,
+                child: Container(
+                  height: 250,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.orange,
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: -140,
+                left: -140,
+                child: Container(
+                  height: 250,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.blue,
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
+                    child: Container(
+                      width: 250,
+                      height: 250,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              ),
               // Positioned(
               //   bottom: -160,
               //   right: -160,
@@ -125,12 +125,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // SvgPicture.asset(
-                      //   'assets/images/steam.svg',
-                      //   height: 230,
-                      //   width: 230,
-                      //   fit: BoxFit.cover,
-                      // ),
+                      SvgPicture.asset(
+                        'assets/images/steam.svg',
+                        height: 230,
+                        width: 230,
+                        fit: BoxFit.cover,
+                      ),
                       const SizedBox(height: 120),
                       const Text(
                         'ثبت نام',

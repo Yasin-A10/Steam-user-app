@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:steam/core/cities/bloc/cities_bloc.dart';
 import 'package:steam/core/cities/bloc/cities_status.dart';
 import 'package:steam/core/constants/colors.dart';
@@ -90,9 +91,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     ? SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(
-                          color: AppColors.orange,
-                          strokeWidth: 2,
+                        child: LoadingAnimationWidget.flickr(
+                          leftDotColor: AppColors.orange,
+                          rightDotColor: AppColors.blue,
+                          size: 28,
                         ),
                       )
                     : const Icon(HugeIcons.strokeRoundedTick02, size: 28),
@@ -122,7 +124,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state.profileStatus is ProfileLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: AppColors.orange,
+                size: 32,
+              ),
+            );
           } else if (state.profileStatus is ProfileError) {
             return Center(
               child: Text(
