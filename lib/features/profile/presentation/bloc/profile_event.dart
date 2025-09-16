@@ -6,5 +6,7 @@ class LoadProfileEvent extends ProfileEvent {}
 
 class UpdateResumeEvent extends ProfileEvent {
   final UpdateResumeModel updateResumeModel;
-  UpdateResumeEvent({required this.updateResumeModel});
+  final bool isDelete;
+
+  UpdateResumeEvent({required this.updateResumeModel, this.isDelete = false});
 }

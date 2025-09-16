@@ -66,7 +66,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _deleteResume(context) async {
     try {
       BlocProvider.of<ProfileBloc>(context).add(
-        UpdateResumeEvent(updateResumeModel: UpdateResumeModel(resume: null)),
+        UpdateResumeEvent(
+          updateResumeModel: UpdateResumeModel(resume: null),
+          isDelete: true,
+        ),
       );
     } catch (e) {
       ScaffoldMessenger.of(

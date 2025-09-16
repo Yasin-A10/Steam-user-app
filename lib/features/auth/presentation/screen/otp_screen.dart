@@ -2,11 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:steam/core/constants/colors.dart';
 // import 'package:steam/core/widgets/button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:steam/core/utils/number_formater.dart';
+import 'package:steam/core/widgets/button.dart';
 import 'package:steam/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:steam/features/auth/presentation/widgets/custom_otp.dart';
 
@@ -133,7 +136,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       const SizedBox(height: 120),
                       const Text(
-                        'ثبت نام',
+                        'تایید شماره موبایل',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -141,12 +144,25 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'لطفاً کد تایید را وارد کنید',
+                      Text(
+                        'کد ۵ رقمی به شماره ${formatNumberToPersianWithoutSeparator(widget.phone)} ارسال شد',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w300,
                           color: AppColors.myGrey3,
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                        onPressed: () {
+                          context.go('/login');
+                        },
+                        child: const Text(
+                          'ویرایش شماره',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.orange,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -169,9 +185,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                   if (state is LoginStateError) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(
-                                          'خطایی رخ داده است ${state.error}',
-                                        ),
+                                        backgroundColor: AppColors.error200,
+                                        content: Text('کد وارد شده صحیح نیست'),
                                       ),
                                     );
                                   }
@@ -204,36 +219,53 @@ class _OtpScreenState extends State<OtpScreen> {
                                                 size: 32,
                                               ),
                                         ),
+
+                                      const SizedBox(height: 16),
+                                      Button(
+                                        width: double.infinity,
+                                        label: 'ورود',
+                                        textColor: AppColors.white,
+                                        backgroundColor: AppColors.orange,
+                                        onPressed: state is LoginStateLoading
+                                            ? null
+                                            : () {
+                                                if (!otpFormKey.currentState!
+                                                    .validate()) {
+                                                  return;
+                                                }
+                                                BlocProvider.of<LoginBloc>(
+                                                  context,
+                                                ).add(
+                                                  LoginEventRequest(
+                                                    username: widget.phone,
+                                                    otp: otpController.text,
+                                                  ),
+                                                );
+                                              },
+                                      ),
                                     ],
                                   );
                                 },
                               ),
-                              const SizedBox(height: 16),
-                              // Button(
-                              //   width: double.infinity,
-                              //   label: 'ورود',
-                              //   textColor: AppColors.white,
-                              //   backgroundColor: AppColors.orange,
-                              //   onPressed: () {
-                              //     if (!otpFormKey.currentState!.validate())
-                              //       return;
-                              //     context.push('/get-name');
-                              //   },
-                              // ),
                             ],
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: const Text(
-                          'ثبت نام در اپلیکیشن استیم به معنای پذیرش تمام قوانین و مقررات و مرام نامه حرمی خصوصی استیم است',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: AppColors.myGrey3,
+                      InkWell(
+                        onTap: () {
+                          _openTerms(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: const Text(
+                            'ثبت نام در اپلیکیشن استیم به معنای پذیرش تمام قوانین و مقررات و مرام نامه حرمی خصوصی استیم است',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                              color: AppColors.myGrey3,
+                            ),
                           ),
                         ),
                       ),
@@ -247,4 +279,66 @@ class _OtpScreenState extends State<OtpScreen> {
       ),
     );
   }
+}
+
+void _openTerms(BuildContext context) {
+  showDialog(
+    barrierColor: AppColors.blueLight.withValues(alpha: 0.2),
+    context: context,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // --- Header ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      'قوانین و مقررات',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: AppColors.myGrey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () => context.pop(),
+                      icon: Icon(HugeIcons.strokeRoundedCancel01, size: 30),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(color: AppColors.myGrey5, thickness: 1),
+              SizedBox(height: 16),
+
+              // --- Body ---
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: ListView.builder(
+                    itemCount: 25,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text('توضیحات قوانین و مقررات ${index + 1}'),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

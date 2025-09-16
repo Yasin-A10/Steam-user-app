@@ -58,7 +58,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             state.copyWith(newResumeStatus: ResumeError(message: error)),
           ),
           (updateResumeModel) {
-            final bool isDeleted = updateResumeModel?.resume == null;
+            // final bool isDeleted = updateResumeModel?.resume == null;
+            final bool isDeleted = event.isDelete;
 
             emit(
               state.copyWith(
