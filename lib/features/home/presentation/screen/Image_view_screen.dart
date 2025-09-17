@@ -12,7 +12,7 @@ class ImageViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.myBlack,
       appBar: AppBar(
         backgroundColor: AppColors.orange,
         title: Text('نمایش تصویر', style: TextStyle(color: AppColors.white)),

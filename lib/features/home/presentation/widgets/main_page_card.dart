@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -113,10 +114,10 @@ class MainPageCard extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const Icon(
-                            HugeIcons.strokeRoundedDollar02,
-                            color: AppColors.yellow,
-                            size: 22,
+                          SvgPicture.asset(
+                            'assets/icons/coin.svg',
+                            width: 24,
+                            height: 24,
                           ),
                         ],
                       ),

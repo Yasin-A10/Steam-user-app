@@ -47,7 +47,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.myBlack,
       appBar: AppBar(
         backgroundColor: AppColors.orange,
         title: Text('پخش ویدئو', style: TextStyle(color: AppColors.white)),

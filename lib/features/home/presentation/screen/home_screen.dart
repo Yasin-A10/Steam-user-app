@@ -168,10 +168,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            const Icon(
-                              HugeIcons.strokeRoundedDollar02,
-                              color: AppColors.yellow,
-                              size: 24,
+                            SvgPicture.asset(
+                              'assets/icons/coin.svg',
+                              width: 24,
+                              height: 24,
                             ),
                           ],
                         ),
