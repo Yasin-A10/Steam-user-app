@@ -30,13 +30,13 @@ class _CustomOtpFieldState extends State<CustomOtpField> {
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 60,
-      textStyle: const TextStyle(fontSize: 22, color: AppColors.myGrey),
+      width: 44,
+      height: 44,
+      textStyle: const TextStyle(fontSize: 20, color: AppColors.myGrey),
       decoration: BoxDecoration(
-        color: AppColors.myGrey6,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.transparent),
+        border: Border.all(color: AppColors.myGrey4),
       ),
     );
 
@@ -56,7 +56,8 @@ class _CustomOtpFieldState extends State<CustomOtpField> {
         ),
         submittedPinTheme: defaultPinTheme.copyWith(
           decoration: defaultPinTheme.decoration!.copyWith(
-            color: AppColors.myGrey6,
+            color: AppColors.myGrey7,
+            border: Border.all(color: AppColors.myGrey4),
           ),
         ),
         errorPinTheme: defaultPinTheme.copyWith(
