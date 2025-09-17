@@ -85,46 +85,46 @@ class _OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: -160,
-                right: -160,
-                child: Container(
-                  height: 250,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.orange,
-                  ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
-                    child: Container(
-                      width: 250,
-                      height: 250,
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: -160,
-                left: -160,
-                child: Container(
-                  height: 250,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.blue,
-                  ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
-                    child: Container(
-                      width: 250,
-                      height: 250,
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   bottom: -160,
+              //   right: -160,
+              //   child: Container(
+              //     height: 250,
+              //     width: 250,
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: AppColors.orange,
+              //     ),
+              //     child: BackdropFilter(
+              //       filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
+              //       child: Container(
+              //         width: 250,
+              //         height: 250,
+              //         color: Colors.transparent,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // Positioned(
+              //   bottom: -160,
+              //   left: -160,
+              //   child: Container(
+              //     height: 250,
+              //     width: 250,
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: AppColors.blue,
+              //     ),
+              //     child: BackdropFilter(
+              //       filter: ImageFilter.blur(sigmaX: 200, sigmaY: 200),
+              //       child: Container(
+              //         width: 250,
+              //         height: 250,
+              //         color: Colors.transparent,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Center(
                 child: SingleChildScrollView(
                   child: Column(
@@ -263,7 +263,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                           horizontal: 24,
                                         ),
                                         child: ResendCodeButton(
-                                          duration: 5,
+                                          duration: 120,
                                           onResend: () {
                                             BlocProvider.of<OtpBloc>(
                                               context,

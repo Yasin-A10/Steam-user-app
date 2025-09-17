@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:steam/core/constants/colors.dart';
+import 'package:steam/core/utils/number_formater.dart';
 
 class ResendCodeButton extends StatefulWidget {
-  final int duration; // مدت زمان تایمر به ثانیه
-  final VoidCallback onResend; // اکشنی که بعد از کلیک انجام میشه
-  final String buttonText; // متن دکمه
+  final int duration;
+  final VoidCallback onResend;
+  final String buttonText;
 
   const ResendCodeButton({
     super.key,
@@ -56,7 +57,7 @@ class _ResendCodeButtonState extends State<ResendCodeButton> {
 
   void _onPressed() {
     widget.onResend();
-    _startTimer(); // دوباره تایمر رو شروع کن
+    _startTimer();
   }
 
   @override
@@ -68,7 +69,7 @@ class _ResendCodeButtonState extends State<ResendCodeButton> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          _formatTime(_remainingTime),
+          formatNumberToPersianWithoutSeparator(_formatTime(_remainingTime)),
           style: TextStyle(
             fontSize: 12,
             color: isEnabled ? AppColors.myGrey3 : AppColors.blue,
