@@ -9,6 +9,7 @@ class UpdatePersonalInfoModel {
   final String? gender;
   final int? selectedCityId;
   final File? picture;
+  final String? birthDate;
 
   UpdatePersonalInfoModel({
     this.fullName,
@@ -16,6 +17,7 @@ class UpdatePersonalInfoModel {
     this.gender,
     this.selectedCityId,
     this.picture,
+    this.birthDate,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +27,7 @@ class UpdatePersonalInfoModel {
     if (biography != null) data['biography'] = biography;
     if (gender != null) data['gender'] = gender;
     if (selectedCityId != null) data['selected_city_id'] = selectedCityId;
+    if (birthDate != null) data['birth_date'] = birthDate;
 
     return data;
   }
@@ -46,6 +49,7 @@ class UpdatePersonalInfoModel {
       biography: json['biography'] as String?,
       gender: json['gender'] as String?,
       selectedCityId: json['selected_city_id'] as int?,
+      birthDate: json['birth_date'] as String?,
     );
   }
 }

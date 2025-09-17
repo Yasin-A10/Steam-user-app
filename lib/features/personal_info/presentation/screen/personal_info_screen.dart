@@ -14,6 +14,7 @@ import 'package:steam/core/widgets/inputs/drop_down.dart';
 import 'package:steam/core/widgets/inputs/input_form_feild.dart';
 import 'package:steam/features/personal_info/data/model/update_personal_info_model.dart';
 import 'package:steam/features/personal_info/presentation/bloc/personal_info_bloc.dart';
+import 'package:steam/features/personal_info/presentation/widgets/birthday_picker.dart';
 import 'package:steam/features/profile/domain/entity/user_entity.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/profile/presentation/bloc/profile_status.dart';
@@ -35,6 +36,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   String? selectedCityName;
   int? selectedCityId;
   String? selectedGender;
+  String? selectedBirthday;
 
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
@@ -109,6 +111,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           gender: selectedGender == 'مرد' ? '0' : '1',
                           selectedCityId: selectedCityId,
                           picture: _selectedImage,
+                          birthDate: selectedBirthday,
                         );
 
                         BlocProvider.of<PersonalInfoBloc>(
@@ -149,6 +152,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               selectedGender = user.gender == '0' ? 'مرد' : 'زن';
               selectedProvince = user.city;
               selectedCityName = user.city;
+              selectedBirthday = user.birthDate;
             }
 
             return GestureDetector(
@@ -340,6 +344,17 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   });
                                 },
                               );
+                            },
+                          ),
+
+                          const SizedBox(height: 16),
+                          //! Birthday Picker
+                          PersianBirthdayPicker(
+                            initialDate: selectedBirthday,
+                            onDateSelected: (date) {
+                              setState(() {
+                                selectedBirthday = date;
+                              });
                             },
                           ),
                         ],

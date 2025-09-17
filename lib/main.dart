@@ -15,6 +15,7 @@ import 'package:steam/features/personal_info/presentation/bloc/personal_info_blo
 import 'package:steam/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:steam/features/home/presentation/bloc/content_bloc.dart';
 import 'package:steam/locator.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,8 +56,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerConfig: appRouter,
         locale: Locale('fa', 'IR'),
-        supportedLocales: const [Locale('fa', 'IR')],
+        supportedLocales: const [Locale('fa', 'IR'), Locale('en', 'US')],
         localizationsDelegates: [
+          PersianMaterialLocalizations.delegate,
+          PersianCupertinoLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
