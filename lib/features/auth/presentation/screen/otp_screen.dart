@@ -11,7 +11,9 @@ import 'package:go_router/go_router.dart';
 import 'package:steam/core/utils/number_formater.dart';
 import 'package:steam/core/widgets/button.dart';
 import 'package:steam/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:steam/features/auth/presentation/bloc/otp/otp_bloc.dart';
 import 'package:steam/features/auth/presentation/widgets/custom_otp.dart';
+import 'package:steam/features/auth/presentation/widgets/resend_code_widget.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
@@ -220,7 +222,60 @@ class _OtpScreenState extends State<OtpScreen> {
                                               ),
                                         ),
 
-                                      const SizedBox(height: 16),
+                                      // BlocConsumer<OtpBloc, OtpState>(
+                                      //   listener: (context, state) {
+                                      //     if (state is OtpStateError) {
+                                      //       ScaffoldMessenger.of(
+                                      //         context,
+                                      //       ).showSnackBar(
+                                      //         SnackBar(
+                                      //           backgroundColor:
+                                      //               AppColors.error200,
+                                      //           content: Text(
+                                      //             'خطا در ارسال کد',
+                                      //           ),
+                                      //         ),
+                                      //       );
+                                      //     }
+                                      //   },
+                                      //   builder: (context, state) {
+                                      //     return Padding(
+                                      //       padding: const EdgeInsets.symmetric(
+                                      //         horizontal: 24,
+                                      //       ),
+                                      //       child: ResendCodeButton(
+                                      //         duration: 5,
+                                      //         onResend: () {
+                                      //           BlocProvider.of<OtpBloc>(
+                                      //             context,
+                                      //           ).add(
+                                      //             OtpEventRequestOtp(
+                                      //               username: widget.phone,
+                                      //             ),
+                                      //           );
+                                      //         },
+                                      //       ),
+                                      //     );
+                                      //   },
+                                      // ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24,
+                                        ),
+                                        child: ResendCodeButton(
+                                          duration: 5,
+                                          onResend: () {
+                                            BlocProvider.of<OtpBloc>(
+                                              context,
+                                            ).add(
+                                              OtpEventRequestOtp(
+                                                username: widget.phone,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+
                                       Button(
                                         width: double.infinity,
                                         label: 'ورود',

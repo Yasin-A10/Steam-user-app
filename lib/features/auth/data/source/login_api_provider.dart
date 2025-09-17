@@ -36,7 +36,7 @@ class LoginApiProvider {
         final loginResponse = LoginModel.fromJson(response.data);
         return loginResponse;
       } else {
-        throw Exception('خطا در ورود: ${response.data['message']}');
+        throw Exception('خطا در ورود: ${response.data['error']}');
       }
     } on DioException catch (e) {
       throw Exception(
